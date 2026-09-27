@@ -18,17 +18,13 @@ EXCLUDED_DIRS = {
     ".idea",
     ".vscode",
     "raw",
-    "runs",
     "manifests",
 }
-
 
 EXCLUDED_EXTENSIONS = {
     ".pyc",
     ".pyo",
     ".pyd",
-    ".pt",
-    ".pth",
     ".zip",
     ".gz",
 }
@@ -39,6 +35,10 @@ def should_exclude(path: Path) -> bool:
             return True
     if path.suffix in EXCLUDED_EXTENSIONS:
         return True
+    # Dopuszczenie wag modeli wyłącznie dla checkpointów best.pt w results/runs/
+    if path.suffix in {".pt", ".pth"}:
+        if not ("results" in path.parts and "runs" in path.parts and path.name == "best.pt"):
+            return True
     return False
 
 def main() -> None:
