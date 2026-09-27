@@ -1,0 +1,12 @@
+{
+  "total_parameters": 634110,
+  "trainable_parameters": 634110,
+  "pure_weights_size_mb": 2.42,
+  "checkpoint_size_mb": 7.28,
+  "cpu_latency_batch_1_ms": 1.078,
+  "cpu_latency_batch_32_ms": 15.076,
+  "cpu_throughput_chars_per_sec": 2122.6,
+  "gpu_latency_batch_1_ms": 0.587,
+  "gpu_latency_batch_32_ms": 0.693,
+  "gpu_throughput_chars_per_sec": 46171.9
+}
