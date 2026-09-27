@@ -25,7 +25,7 @@ def main() -> None:
     # Wczytanie nieprzetworzonego obrazu demonstracyjnego
     viz_transform = T.Compose([
         T.Lambda(fix_emnist_orientation),
-        T.Resize((32, 32)),
+        T.Pad(padding=2, fill=0),
         T.ToTensor(),
     ])
     train_set, _, _ = get_raw_emnist_datasets(transform=viz_transform)

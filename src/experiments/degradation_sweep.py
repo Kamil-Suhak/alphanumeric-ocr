@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Callable
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageOps
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
@@ -40,7 +40,7 @@ class ControlledDegradationDataset(Dataset):
 
     def __getitem__(self, idx: int):
         img_pil, target = self.base_dataset[idx]
-        img_pil = fix_emnist_orientation(img_pil).resize((32, 32))
+        img_pil = ImageOps.expand(fix_emnist_orientation(img_pil), border=2, fill=0)
         arr = np.asarray(img_pil, dtype=np.float32) / 255.0
 
         if self.degradation_fn is not None:

@@ -50,7 +50,16 @@ def main() -> None:
     print(f"Rozpoczęcie eksperymentu {exp_name} (Robust CNN) na urządzeniu: {device}")
 
     # Uczący potok z syntetycznymi degradacjami; walidacyjny i testowy czyste (bez degradacji)
-    train_tf = get_robust_transform(seed=seed)
+    aug_cfg = cfg.get("augmentation", {})
+    aug_kwargs = {}
+    if "max_sigma" in aug_cfg:
+        aug_kwargs["max_sigma"] = float(aug_cfg["max_sigma"])
+    if "max_noise_std" in aug_cfg:
+        aug_kwargs["max_noise_std"] = float(aug_cfg["max_noise_std"])
+    if "max_perspective_severity" in aug_cfg:
+        aug_kwargs["max_perspective_severity"] = float(aug_cfg["max_perspective_severity"])
+
+    train_tf = get_robust_transform(seed=seed, **aug_kwargs)
     eval_tf = get_base_transform()
 
     train_set, val_set, test_set = get_raw_emnist_datasets(

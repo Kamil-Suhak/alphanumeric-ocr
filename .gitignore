@@ -23,7 +23,6 @@ data/processed/
 *.onnx
 *.bin
 *.zip
-results/runs/
 
 # Logi i pliki tymczasowe
 *.log
@@ -34,6 +33,7 @@ results/runs/
 .idea/
 .vscode/
 .gemini/
+PROJECT_STATE.md
 *.swp
 *.swo
 

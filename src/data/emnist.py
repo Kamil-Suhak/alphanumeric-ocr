@@ -30,18 +30,23 @@ def fix_emnist_orientation(img: Image.Image) -> Image.Image:
 def get_base_transform(mean: float = EMNIST_MEAN, std: float = EMNIST_STD) -> T.Compose:
     return T.Compose([
         T.Lambda(fix_emnist_orientation),
-        T.Resize((32, 32)),
+        T.Pad(padding=2, fill=0),
         T.ToTensor(),
         T.Normalize(mean=(mean,), std=(std,)),
     ])
 
-def get_robust_transform(mean: float = EMNIST_MEAN, std: float = EMNIST_STD, seed: int = 123) -> T.Compose:
+def get_robust_transform(
+    mean: float = EMNIST_MEAN,
+    std: float = EMNIST_STD,
+    seed: int = 123,
+    **pipeline_kwargs,
+) -> T.Compose:
     """Potok transformacji uczących z syntetycznymi degradacjami (Model B - Robust)."""
     from src.data.transforms import DegradationPipeline
     return T.Compose([
         T.Lambda(fix_emnist_orientation),
-        T.Resize((32, 32)),
-        DegradationPipeline(seed=seed),
+        T.Pad(padding=2, fill=0),
+        DegradationPipeline(seed=seed, **pipeline_kwargs),
         T.ToTensor(),
         T.Normalize(mean=(mean,), std=(std,)),
     ])

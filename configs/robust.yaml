@@ -8,8 +8,8 @@ dataset:
   name: emnist_byclass
   num_classes: 62
   val_ratio: 0.1
-  mean: 0.1739
-  std: 0.3170
+  mean: 0.1331
+  std: 0.2870
 
 model:
   name: AlphanumericCNN
@@ -28,4 +28,4 @@ augmentation:
   noise: true
   max_noise_std: 0.15
   perspective: true
-  max_perspective_severity: 0.15
+  max_perspective_severity: 0.25

@@ -9,8 +9,8 @@ RESULTS_DIR = PROJECT_ROOT / "results"
 FIGURES_DIR = RESULTS_DIR / "figures"
 RUNS_DIR = RESULTS_DIR / "runs"
 
-# Parametry normalizacji wyznaczone eksperymentalnie na 90% zbioru treningowego ByClass (scripts/compute_normalization.py)
-EMNIST_MEAN = 0.1739
-EMNIST_STD = 0.3170
+# Parametry normalizacji wyznaczone eksperymentalnie na 90% zbioru treningowego ByClass po dopełnieniu zerami (scripts/compute_normalization.py)
+EMNIST_MEAN = 0.1331
+EMNIST_STD = 0.2870
 
 

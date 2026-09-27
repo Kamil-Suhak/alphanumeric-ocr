@@ -16,7 +16,7 @@ def main() -> None:
     # Transformacja wizualizacyjna bez normalizacji (wyłącznie korekta orientacji i skalowanie do 32x32)
     viz_transform = T.Compose([
         T.Lambda(fix_emnist_orientation),
-        T.Resize((32, 32)),
+        T.Pad(padding=2, fill=0),
         T.ToTensor(),
     ])
 
