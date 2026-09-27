@@ -73,7 +73,15 @@ def run_single_sweep(
             deg_fn = None
 
         sweep_ds = ControlledDegradationDataset(raw_test_dataset, degradation_fn=deg_fn)
-        loader = DataLoader(sweep_ds, batch_size=batch_size, shuffle=False, num_workers=0)
+        num_workers = 2 if torch.cuda.is_available() else 0
+        pin_memory = torch.cuda.is_available()
+        loader = DataLoader(
+            sweep_ds,
+            batch_size=batch_size,
+            shuffle=False,
+            num_workers=num_workers,
+            pin_memory=pin_memory,
+        )
 
         metrics, _, _ = evaluate_model(model, loader, device=device)
         results.append({
@@ -126,12 +134,14 @@ def save_sweep_csv(
     Path(save_path).parent.mkdir(parents=True, exist_ok=True)
     with open(save_path, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["severity", "clean_acc", "clean_macro_f1", "robust_acc", "robust_macro_f1"])
+        writer.writerow(["severity", "clean_acc", "clean_case_insensitive_acc", "clean_macro_f1", "robust_acc", "robust_case_insensitive_acc", "robust_macro_f1"])
         for c, r in zip(clean_results, robust_results):
             writer.writerow([
                 f"{c['severity']:.2f}",
                 f"{c['accuracy']*100:.2f}",
+                f"{c['case_insensitive_accuracy']*100:.2f}",
                 f"{c['macro_f1']*100:.2f}",
                 f"{r['accuracy']*100:.2f}",
+                f"{r['case_insensitive_accuracy']*100:.2f}",
                 f"{r['macro_f1']*100:.2f}",
             ])

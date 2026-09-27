@@ -60,10 +60,10 @@ def main() -> None:
     for deg_type, levels, xlabel, title in sweeps:
         print(f"\n--- Rozpoczęcie testu: {deg_type.upper()} ---")
         print("Ewaluacja Modelu A (Czystego)...")
-        clean_res = run_single_sweep(clean_model, raw_test, deg_type, levels, device)
+        clean_res = run_single_sweep(clean_model, raw_test, deg_type, levels, device, batch_size=512)
 
         print("Ewaluacja Modelu B (Odpornego)...")
-        robust_res = run_single_sweep(robust_model, raw_test, deg_type, levels, device)
+        robust_res = run_single_sweep(robust_model, raw_test, deg_type, levels, device, batch_size=512)
 
         csv_path = robustness_out_dir / f"{deg_type}.csv"
         save_sweep_csv(clean_res, robust_res, csv_path)

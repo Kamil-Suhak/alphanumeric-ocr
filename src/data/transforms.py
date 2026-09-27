@@ -10,7 +10,7 @@ except ImportError:
 # Zdefiniowane poziomy degradacji zgodnie z sekcjami 17, 18, 19 oraz 20 planu
 BLUR_SEVERITY_LEVELS = [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
 NOISE_SEVERITY_LEVELS = [0.0, 0.03, 0.06, 0.10, 0.15, 0.20]
-PERSPECTIVE_SEVERITY_LEVELS = [0.0, 0.05, 0.10, 0.15, 0.20]
+PERSPECTIVE_SEVERITY_LEVELS = [0.0, 0.05, 0.10, 0.15, 0.20, 0.25]
 
 def apply_gaussian_blur(image: np.ndarray, sigma: float) -> np.ndarray:
     """Aproksymacja rozmycia gaussowskiego z dopasowaniem rozmiaru jądra do wartości sigma."""
