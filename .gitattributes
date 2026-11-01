@@ -1,0 +1,2 @@
+# Exported milestone reports (HTML/TeX) are artifacts, not source; keep them out of language stats
+milestones/**/source_docs/** linguist-documentation
