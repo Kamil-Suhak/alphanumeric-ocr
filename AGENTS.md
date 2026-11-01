@@ -45,7 +45,7 @@ This document establishes the binding architectural constraints, operational inv
 ## 2. Repository Layout & Role Mapping
 
 ```text
-alphanumeric_ocr/
+alphanumeric-ocr/
 ├── document/             # Main thesis document (Typst)
 │   ├── main.typ          # Root entrypoint
 │   ├── metadata.typ      # Title, author, supervisor, faculty settings

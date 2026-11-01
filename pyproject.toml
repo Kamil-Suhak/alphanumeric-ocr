@@ -1,5 +1,5 @@
 [project]
-name = "alphanumeric_ocr"
+name = "alphanumeric-ocr"
 version = "0.2.0"
 description = "Badanie odporności sieci CNN na degradacje środowiskowe w zadaniu klasyfikacji znaków alfanumerycznych EMNIST"
 readme = "README.md"
