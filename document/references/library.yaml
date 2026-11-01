@@ -1,0 +1,111 @@
+# Biblioteka referencji w formacie Hayagriva YAML (standard Typst, bez BibTeX)
+
+cohen2017emnist:
+  type: conference
+  title: "EMNIST: Extending MNIST to Handwritten Letters"
+  author:
+    - Cohen, Gregory
+    - Afshar, Saeed
+    - Tapson, Jonathan
+    - van Schaik, André
+  date: 2017
+  parent:
+    title: "2017 International Joint Conference on Neural Networks (IJCNN)"
+  page-range: 2921-2926
+  serial-number:
+    doi: 10.1109/IJCNN.2017.7966039
+
+lecun1998lenet:
+  type: article
+  title: "Gradient-Based Learning Applied to Document Recognition"
+  author:
+    - LeCun, Yann
+    - Bottou, Léon
+    - Bengio, Yoshua
+    - Haffner, Patrick
+  date: 1998
+  parent:
+    title: "Proceedings of the IEEE"
+    volume: 86
+    issue: 11
+  page-range: 2278-2324
+  serial-number:
+    doi: 10.1109/5.726791
+
+campos2009chars74k:
+  type: conference
+  title: "Character Recognition in Natural Images"
+  author:
+    - de Campos, Teófilo E.
+    - Babu, B. R.
+    - Varma, Manik
+  date: 2009
+  parent:
+    title: "Proceedings of the Fourth International Conference on Computer Vision Theory and Applications (VISAPP)"
+  page-range: 273-280
+
+hendrycks2019benchmarking:
+  type: conference
+  title: "Benchmarking Neural Network Robustness to Common Corruptions and Perturbations"
+  author:
+    - Hendrycks, Dan
+    - Dietterich, Thomas
+  date: 2019
+  parent:
+    title: "International Conference on Learning Representations (ICLR)"
+  serial-number:
+    doi: 10.48550/arXiv.1903.12261
+
+shorten2019survey:
+  type: article
+  title: "A Survey on Image Data Augmentation for Deep Learning"
+  author:
+    - Shorten, Connor
+    - Khoshgoftaar, Taghi M.
+  date: 2019
+  parent:
+    title: "Journal of Big Data"
+    volume: 6
+    issue: 1
+  page-range: 1-48
+  serial-number:
+    doi: 10.1186/s40537-019-0197-0
+
+loshchilov2017adamw:
+  type: conference
+  title: "Decoupled Weight Decay Regularization"
+  author:
+    - Loshchilov, Ilya
+    - Hutter, Frank
+  date: 2019
+  parent:
+    title: "International Conference on Learning Representations (ICLR)"
+  serial-number:
+    doi: 10.48550/arXiv.1711.05101
+
+ioffe2015batchnorm:
+  type: conference
+  title: "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift"
+  author:
+    - Ioffe, Sergey
+    - Szegedy, Christian
+  date: 2015
+  parent:
+    title: "Proceedings of the 32nd International Conference on Machine Learning (ICML)"
+  page-range: 448-456
+
+srivastava2014dropout:
+  type: article
+  title: "Dropout: A Simple Way to Prevent Neural Networks from Overfitting"
+  author:
+    - Srivastava, Nitish
+    - Hinton, Geoffrey
+    - Krizhevsky, Alex
+    - Sutskever, Ilya
+    - Salakhutdinov, Ruslan
+  date: 2014
+  parent:
+    title: "The Journal of Machine Learning Research"
+    volume: 15
+    issue: 1
+  page-range: 1929-1958

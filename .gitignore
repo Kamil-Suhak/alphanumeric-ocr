@@ -1,47 +1,56 @@
-# Środowisko wirtualne
+# Virtual environments
 .venv/
 venv/
 ENV/
 env/
 
-# Pamięć podręczna Pythona i kompilacja
+# Python cache & build
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
 
-# Zbiory danych (pliki binarne i archiwa)
+# Datasets (binary files & archives)
 data/raw/
 data/processed/
-!data/manifests/
-!data/**/.gitkeep
+!experiments/manifests/
+!experiments/manifests/*.csv
 
-# Wagi modeli i duże pliki binarne
+# Model weights & large binary archives
 *.pt
 *.pth
 *.onnx
 *.bin
 *.zip
+*.tar.gz
+*.tgz
 
-# Logi i pliki tymczasowe
-*.log
-*.tmp
-*.temp
+# LaTeX artifacts (legacy)
+*.aux
+*.bcf
+*.bbl
+*.blg
+*.lof
+*.lot
+*.out
+*.toc
+*.run.xml
+*.synctex.gz
 
-# Pliki środowisk IDE i edytorów
-.idea/
-.vscode/
-.gemini/
-PROJECT_STATE.md
-*.swp
-*.swo
-
-# Pliki systemowe
+# System files
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 .DS_Store
 
-documents/
-reports/
+# IDE & Editor cache
+.idea/
+.vscode/
+.gemini/
+*.swp
+*.swo

@@ -1,0 +1,302 @@
+\section{Cel i zakres badań}\label{cel-i-zakres-badaux144}
+
+Celem projektu jest ocena wpływu degradacji obrazu na skuteczność
+klasyfikacji pojedynczych znaków alfanumerycznych oraz zbadanie, czy
+zastosowanie takich degradacji w procesie uczenia zwiększa odporność
+niewielkiej sieci konwolucyjnej (CNN). Rozpatrywany jest problem
+klasyfikacji wyodrębnionych obrazów znaków, a nie pełny proces
+wykrywania i rozpoznawania tekstu w obrazie.
+
+Badanie oparto na porównaniu dwóch modeli o identycznej architekturze:
+modelu A uczonego na obrazach bez dodatkowych degradacji oraz modelu B
+uczonego z wykorzystaniem syntetycznych zaburzeń. Dla obu modeli
+zastosowano wspólny zbiór testowy z tymi samymi poziomami degradacji.
+
+\section{Zbiór danych i przygotowanie
+  obrazów}\label{zbiuxf3r-danych-i-przygotowanie-obrazuxf3w}
+
+W eksperymentach wykorzystano EMNIST ByClass, zestaw danych składający
+się z 62 klas obejmujących cyfry 0--9, wielkie litery A--Z i małe litery
+a--z. Obrazy o rozdzielczości 28 × 28 pikseli skorygowano pod względem
+orientacji, po czym uzupełniono dwupikselowym czarnym obramowaniem do 32
+× 32 pikseli bez przeskalowywania zawartości. Dane znormalizowano według
+średniej 0,1331 i odchylenia standardowego 0,2870.
+
+Z oficjalnego zbioru treningowego (697 933 obrazów) wydzielono przy
+stałym ziarnie 123 podzbiór treningowy (628 139) oraz walidacyjny (69
+794). Indeksy tego podziału zapisano w plikach projektu. Oficjalny zbiór
+testowy liczący 116 323 próbki pozostawiono odrębny od treningu i
+walidacji.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image1.png}
+  \caption{Przykładowe obrazy i etykiety zbioru EMNIST ByClass po
+    korekcie orientacji. Źródło: wyniki własnego przetwarzania danych.}
+\end{figure}
+
+\section{Architektura sieci i założenia
+  eksperymentu}\label{architektura-sieci-i-zaux142oux17cenia-eksperymentu}
+
+\subsection{Zastosowana architektura
+  CNN}\label{zastosowana-architektura-cnn}
+
+Zastosowano własny, kompaktowy klasyfikator z trzema kolejnymi blokami
+konwolucyjnymi oraz dwuwarstwową głowicą klasyfikacyjną. Każdy blok
+konwolucyjny wykorzystuje filtr 3 × 3 z dopełnieniem zachowującym
+rozdzielczość, normalizację wsadową (BatchNorm), funkcję ReLU i operację
+MaxPool 2 × 2. Liczba kanałów wzrasta od 32 do 128, natomiast rozmiar
+map cech stopniowo maleje od 32 × 32 do 4 × 4.
+
+\begin{longtable}{p{0.24\linewidth}p{0.43\linewidth}p{0.23\linewidth}}
+  \toprule
+  \textbf{Etap} & \textbf{Operacje}                                   & \textbf{Rozmiar wyjścia} \\
+  \midrule
+  Wejście       & Obraz w skali szarości                              & 1 × 32 × 32              \\
+  Warstwa 1     & Conv 1→32 (3 × 3) + BN + ReLU + MaxPool             & 32 × 16 × 16             \\
+  Warstwa 2     & Conv 32→64 (3 × 3) + BN + ReLU + MaxPool            & 64 × 8 × 8               \\
+  Warstwa 3     & Conv 64→128 (3 × 3) + BN + ReLU + MaxPool           & 128 × 4 × 4              \\
+  Klasyfikator  & Flatten 2048 → Linear 256 + BN + ReLU + Dropout 0,5 & 256                      \\
+  Wyjście       & Linear 256 → 62                                     & 62                       \\
+  \bottomrule
+\end{longtable}
+
+Warstwy konwolucyjne wyznaczają cechy lokalne, a zwiększanie liczby
+kanałów umożliwia opis coraz bardziej złożonych kombinacji tych cech.
+MaxPool zmniejsza rozdzielczość reprezentacji, ograniczając koszt
+obliczeń. Głowica liniowa przekształca uzyskane cechy w 62 wyniki
+odpowiadające klasom EMNIST ByClass. Normalizacja wsadowa BatchNorm i
+dropout wspierają stabilność uczenia oraz ograniczanie przeuczenia; nie
+gwarantują jednak odporności na określone deformacje.
+
+Sieć zawiera 634 110 parametrów uczonych. Same wagi zapisane w formacie
+FP32 zajmują około 2,54 MB. Rozmiar sieci stanowi cechę projektu,
+natomiast ocena realnej przydatności np. potencjału wybranej
+architektury do działania w czasie rzeczywistym na telefonach
+komórkowych, wymagałaby osobnych pomiarów na docelowym sprzęcie.
+
+\subsection{Strategie uczenia i degradacje
+  obrazu}\label{strategie-uczenia-i-degradacje-obrazu}
+
+Model A trenowano na obrazach bez dodatkowych degradacji. W przypadku
+modelu B w trakcie uczenia losowo stosowano trzy typy transformacji;
+każda mogła zostać wybrana z prawdopodobieństwem 50\%: rozmycie Gaussa
+($\sigma \leq 2{,}0$), szum gaussowski (odchylenie standardowe $\leq 0{,}15$
+dla intensywności w zakresie 0--1) oraz zaburzenie perspektywy (maksymalne
+przesunięcie narożnika $\leq 0{,}25$ krótszego wymiaru obrazu). Wybranie
+jednego z zaburzeń dla danego obrazu nie wyklucza dobrania innego
+rodzaju. W efekcie, wszystkie kombinacje 3 możliwych degradacji oraz
+braku żadnej znalazły się w zestawie danych treningowych modelu B.
+
+\begin{longtable}{p{0.62\linewidth}p{0.28\linewidth}}
+  \toprule
+  \textbf{Liczba zaplikowanych degradacji}       & \textbf{Prawdopodobieństwo}              \\
+  \midrule
+  Wszystkie trzy -- zamazanie, szum, skrzywienie & \textbf{12.5\%} (\({0.5}^{3}\))          \\
+  Którekolwiek dwie -- np. zamazanie, szum       & \textbf{37.5\%} (\(3 \times {0.5}^{3}\)) \\
+  Tylko jedna -- np. zamazanie                   & \textbf{37.5\%} (\(3 \times {0.5}^{3}\)) \\
+  Czysty obraz bez degradacji                    & \textbf{12.5\%} (\({0.5}^{3}\))          \\
+  \bottomrule
+\end{longtable}
+
+Wybrano trzy różne mechanizmy pogorszenia jakości danych wejściowych:
+utratę drobnych szczegółów, zakłócenia wartości pikseli oraz zmianę
+geometrii znaku. Na potrzeby wizualizacji przygotowano osobne serie
+testów ze stopniowo zwiększaną intensywnością każdego zaburzenia.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image2.png}
+  \caption{Przykładowe poziomy rozmycia, szumu i deformacji
+    perspektywicznej tego samego znaku. Źródło: własny generator
+    degradacji.}
+\end{figure}
+
+\section{Przebieg uczenia i
+  diagnostyka}\label{przebieg-uczenia-i-diagnostyka}
+
+Oba modele trenowano od początku przez 25 epok, stosując optymalizator
+AdamW (learning rate 0,001; weight decay 0,0001), wielkość partii 512 i
+funkcję straty entropii krzyżowej. Jako wynik każdego treningu zachowano
+checkpoint o najniższej stracie walidacyjnej.
+
+\subsection{Model A --- trening bez
+  degradacji}\label{model-a-trening-bez-degradacji}
+
+W modelu A strata treningowa maleje w kolejnych epokach. Strata
+walidacyjna osiąga minimum 0,3328 w epoce 11, po czym rośnie do 0,3549 w
+epoce 25, mimo dalszej poprawy na zbiorze treningowym. Przebieg ten
+wskazuje na pogłębiającą się rozbieżność między dopasowaniem do danych
+treningowych a zachowaniem na walidacji. Ostatecznie zapisany model
+został pobrany z checkpointu po epoce 11, po której zaobserwowano
+zjawisko przeuczenia.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image3.png}
+  \caption{Model A: przebieg straty i dokładności w trakcie
+    uczenia oraz walidacji.}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image4.png}
+  \caption{Model A: znormalizowana macierz pomyłek na danych
+    testowych. Źródło: wyniki własne.}
+\end{figure}
+
+\subsection{Model B --- trening z syntetycznymi
+  degradacjami}\label{model-b-trening-z-syntetycznymi-degradacjami}
+
+Dla modelu B zadanie treningowe jest trudniejsze, ponieważ część obrazów
+w każdej epoce podlega losowym zmianom. W badanym przebiegu strata
+walidacyjna maleje do 0,3326 w epoce 25; nie obserwuje się późnego
+wzrostu analogicznego do modelu A. W przeciwieństwie do modelu bazowego,
+podczas trenowania modelu B nie zaobserwowano zjawiska przeuczenia,
+lokalne minimum straty walidacyjnej zostało osiągnięte podczas ostatniej
+epoki treningowej.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image5.png}
+  \caption{Model B: przebieg straty i dokładności w trakcie
+    uczenia oraz walidacji.}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image6.png}
+  \caption{Model B: znormalizowana macierz pomyłek na danych
+    testowych. Źródło: wyniki własne.}
+\end{figure}
+
+\section{Wyniki testów
+  porównawczych}\label{wyniki-testuxf3w-poruxf3wnawczych}
+
+\subsection{Klasyfikacja obrazów bez
+  degradacji}\label{klasyfikacja-obrazuxf3w-bez-degradacji}
+
+Na niezmodyfikowanym zbiorze testowym oba modele osiągają zbliżoną
+dokładność top-1: 87,62\% dla modelu A i 87,46\% dla modelu B. Różnice
+między metrykami uśrednianymi po klasach nie są jednak jednakowe.
+
+\begin{longtable}{p{0.26\linewidth}p{0.22\linewidth}p{0.22\linewidth}p{0.22\linewidth}}
+  \toprule
+  \textbf{Metryka}                            & \textbf{Model A} & \textbf{Model B} & \textbf{Różnica B-A} \\
+  \midrule
+  Top-1 accuracy                              & 87,62\%          & 87,46\%          & -0,16 p.p.           \\
+  Dokładność bez rozróżniania wielkości liter & 90,96\%          & 90,88\%          & -0,08 p.p.           \\
+  Macro-precision                             & 80,59\%          & 82,07\%          & +1,48 p.p.           \\
+  Macro-recall                                & 75,30\%          & 74,56\%          & -0,74 p.p.           \\
+  Macro-F1                                    & 75,59\%          & 74,58\%          & -1,01 p.p.           \\
+  \bottomrule
+\end{longtable}
+
+Wprowadzenie degradacji podczas treningu nie spowodowało dużego
+pogorszenia dokładności top-1 na obrazach bez degradacji. Jednocześnie
+niższy macro-F1 modelu B wskazuje, że trenowanie na obrazach z
+degradacjami stanowi kompromis, zamiast być bezwzględnie lepszym
+rozwiązaniem.
+
+\subsection{Zmiany dokładności wraz z poziomem
+  degradacji}\label{zmiany-dokux142adnoux15bci-wraz-z-poziomem-degradacji}
+
+Oba modele oceniano na tych samych 116 323 próbkach zbioru testowego,
+osobno dla kolejnych intensywności degradacji. Poniższe wykresy
+przedstawiają pełne przebiegi; zestawienie wybranych punktów ułatwia
+porównanie skali różnic.
+
+\begin{longtable}{p{0.33\linewidth}p{0.22\linewidth}p{0.22\linewidth}p{0.20\linewidth}}
+  \toprule
+  \textbf{Warunek}        & \textbf{Model A} & \textbf{Model B} & \textbf{Różnica B-A} \\
+  \midrule
+  Rozmycie $\sigma$ = 1,0 & 71,69\%          & 87,25\%          & +15,56 p.p.          \\
+  Rozmycie $\sigma$ = 2,0 & 12,24\%          & 86,20\%          & +73,96 p.p.          \\
+  Rozmycie $\sigma$ = 3,0 & 4,28\%           & 64,44\%          & +60,16 p.p.          \\
+  Szum std = 0,15         & 74,99\%          & 87,08\%          & +12,09 p.p.          \\
+  Szum std = 0,20         & 37,65\%          & 86,59\%          & +48,94 p.p.          \\
+  Perspektywa = 0,15      & 80,24\%          & 85,83\%          & +5,59 p.p.           \\
+  Perspektywa = 0,25      & 64,36\%          & 82,83\%          & +18,47 p.p.          \\
+  \bottomrule
+\end{longtable}
+
+\subsubsection{Rozmycie gaussowskie}\label{rozmycie-gaussowskie}
+
+Wraz ze wzrostem $\sigma$ dokładność modelu A maleje gwałtownie: od 87,62\% na
+czystych obrazach do 12,24\% przy $\sigma$ = 2,0. Model B zachowuje w tym
+punkcie 86,20\% dokładności. Przy $\sigma$ = 3,0 wyniki wynoszą odpowiednio
+4,28\% i 64,44\%. Poziomy $\sigma$ = 2,5 i 3,0 przekraczają maksymalną wartość
+rozmycia stosowaną podczas treningu modelu B.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image7.png}
+  \caption{Dokładność top-1 obu modeli w zależności od odchylenia
+    standardowego rozmycia gaussowskiego.}
+\end{figure}
+
+\subsubsection{Szum gaussowski}\label{szum-gaussowski}
+
+Model B zachowuje zbliżoną dokładność niezależnie od badanej
+intensywności szumu. Przy odchyleniu standardowym 0,20 osiąga 86,59\%,
+podczas gdy dokładność modelu A spada do 37,65\%. Różnica wynosi 48,94
+punktu procentowego.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image8.png}
+  \caption{Dokładność top-1 obu modeli w zależności od poziomu
+    addytywnego szumu gaussowskiego.}
+\end{figure}
+
+\subsubsection{Zniekształcenia
+  perspektywiczne}\label{znieksztaux142cenia-perspektywiczne}
+
+Wraz ze wzrostem stopnia skrzywienia dokładność obu modeli stopniowo się
+obniża, jednak spadek jest większy dla modelu A. Przy maksymalnym
+badanym poziomie 0,25 wartości wynoszą 64,36\% (A) i 82,83\% (B),
+różnica wynosi 18,47 punktu procentowego.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth,keepaspectratio]{media/media/image9.png}
+  \caption{Dokładność top-1 obu modeli w zależności od
+    maksymalnego względnego przesunięcia narożników.}
+\end{figure}
+
+\section{Wnioski wstępne i dalszy plan
+  badań}\label{wnioski-wstux119pne-i-dalszy-plan-badaux144}
+
+Uzyskane wyniki sugerują, że uwzględnienie syntetycznych degradacji
+podczas uczenia zwiększa odporność badanej architektury na rozmycie,
+szum i deformacje perspektywiczne, przy niewielkiej zmianie dokładności
+na obrazach bez degradacji. Największe przewagi modelu B zaobserwowano
+dla silnego rozmycia i szumu. Zakres wnioskowania jest jednak
+ograniczony do zastosowanej architektury, zbioru EMNIST ByClass i
+przyjętego sposobu generowania degradacji.
+
+\subsection{Ograniczenia}\label{ograniczenia}
+
+Wyniki pochodzą z pojedynczego przebiegu uczenia każdego modelu, dlatego
+nie określają jeszcze zmienności między uruchomieniami. Wykorzystano
+jedną architekturę i jeden zbiór danych, a degradacje miały charakter
+syntetyczny. Badanie nie przesądza więc o skuteczności na zdjęciach
+rzeczywistych ani o przenoszeniu obserwacji na inne modele.
+
+\subsection{Planowane kolejne kroki}\label{planowane-kolejne-kroki}
+
+\begin{itemize}
+  \item
+        Powtórzenie uczenia modeli A i B z różnymi ziarnami aby uniezależnić
+        eksperymenty od losowości.
+  \item
+        Jakościowa analiza pomyłek, w tym par znaków, predykcji obu modeli dla
+        tych samych przykładów i wyników według klas.
+  \item
+        Rozważenie dodatkowych metod degradacji zbliżonych do warunków
+        występujących w rzeczywistych warunkach.
+  \item
+        Ocena możliwości przeniesienia wyników modelu B względem modelu A na
+        osobny zbiór rzeczywistych fotografii znaków, przykładowo na zestaw
+        danych Chars74k, bądź na samodzielnie stworzony zbiór zdjęć.
+\end{itemize}

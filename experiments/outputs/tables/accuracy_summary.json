@@ -1,0 +1,32 @@
+{
+  "clean_baseline": {
+    "name": "Model A (Czysty)",
+    "accuracy": 87.62,
+    "case_insensitive_accuracy": 90.96,
+    "macro_precision": 80.59,
+    "macro_recall": 75.30,
+    "macro_f1": 75.59,
+    "blur_sigma_1_0": 71.69,
+    "blur_sigma_2_0": 12.24,
+    "blur_sigma_3_0": 4.28,
+    "noise_std_0_15": 74.99,
+    "noise_std_0_20": 37.65,
+    "perspective_0_15": 80.24,
+    "perspective_0_25": 64.36
+  },
+  "robust_cnn": {
+    "name": "Model B (Odporny)",
+    "accuracy": 87.46,
+    "case_insensitive_accuracy": 90.88,
+    "macro_precision": 82.07,
+    "macro_recall": 74.56,
+    "macro_f1": 74.58,
+    "blur_sigma_1_0": 87.25,
+    "blur_sigma_2_0": 86.20,
+    "blur_sigma_3_0": 64.44,
+    "noise_std_0_15": 87.08,
+    "noise_std_0_20": 86.59,
+    "perspective_0_15": 85.83,
+    "perspective_0_25": 82.83
+  }
+}
