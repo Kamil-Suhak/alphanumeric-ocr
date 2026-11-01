@@ -1,5 +1,30 @@
 // Szablon pracy dyplomowej inżynierskiej AGH (Typst v0.15+)
 
+// Pomocnicze funkcje formatowania liczb i metryk dla tabel empirycznych
+#let fmt_val(val, digits: 2, unit: "%") = {
+  let r = calc.round(val, digits: digits)
+  let parts = str(calc.abs(r)).split(".")
+  let int_part = parts.at(0)
+  let frac_part = if parts.len() > 1 { parts.at(1) } else { "" }
+  while frac_part.len() < digits {
+    frac_part = frac_part + "0"
+  }
+  let sign_str = if r < 0 { "-" } else { "" }
+  sign_str + int_part + "," + frac_part + unit
+}
+
+#let fmt_diff(val, digits: 2, unit: " p.p.") = {
+  let r = calc.round(val, digits: digits)
+  let parts = str(calc.abs(r)).split(".")
+  let int_part = parts.at(0)
+  let frac_part = if parts.len() > 1 { parts.at(1) } else { "" }
+  while frac_part.len() < digits {
+    frac_part = frac_part + "0"
+  }
+  let sign_str = if r < 0 { "-" } else if r > 0 { "+" } else { "" }
+  sign_str + int_part + "," + frac_part + unit
+}
+
 #let agh_thesis(
   title_pl: "",
   title_en: "",

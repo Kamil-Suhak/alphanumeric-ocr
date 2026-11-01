@@ -1,4 +1,5 @@
 #import "../metadata.typ": *
+#import "../template/agh_thesis.typ": fmt_val, fmt_diff
 
 // Dynamiczne wczytanie danych z plików JSON generowanych przez moduł eksperymentów
 #let results = json("../../experiments/outputs/tables/accuracy_summary.json")
@@ -14,11 +15,11 @@ Ewaluację przeprowadzono na pełnym, wyizolowanym zbiorze testowym EMNIST ByCla
     columns: (2fr, 1.2fr, 1.2fr, 1.2fr),
     align: (left, center, center, center),
     table.header([*Metryka*], [*Model A (Czysty)*], [*Model B (Odporny)*], [*Różnica (B - A)*]),
-    [Dokładność Top-1 (Accuracy)], [#results.clean_baseline.accuracy%], [#results.robust_cnn.accuracy%], [#(results.robust_cnn.accuracy - results.clean_baseline.accuracy)%],
-    [Dokładność bez wielkości liter], [#results.clean_baseline.case_insensitive_accuracy%], [#results.robust_cnn.case_insensitive_accuracy%], [#(results.robust_cnn.case_insensitive_accuracy - results.clean_baseline.case_insensitive_accuracy)%],
-    [Macro-Precision], [#results.clean_baseline.macro_precision%], [#results.robust_cnn.macro_precision%], [+#(results.robust_cnn.macro_precision - results.clean_baseline.macro_precision)%],
-    [Macro-Recall], [#results.clean_baseline.macro_recall%], [#results.robust_cnn.macro_recall%], [#(results.robust_cnn.macro_recall - results.clean_baseline.macro_recall)%],
-    [Macro-F1], [#results.clean_baseline.macro_f1%], [#results.robust_cnn.macro_f1%], [#(results.robust_cnn.macro_f1 - results.clean_baseline.macro_f1)%],
+    [Dokładność Top-1 (Accuracy)], [#fmt_val(results.clean_baseline.accuracy)], [#fmt_val(results.robust_cnn.accuracy)], [#fmt_diff(results.robust_cnn.accuracy - results.clean_baseline.accuracy)],
+    [Dokładność bez wielkości liter], [#fmt_val(results.clean_baseline.case_insensitive_accuracy)], [#fmt_val(results.robust_cnn.case_insensitive_accuracy)], [#fmt_diff(results.robust_cnn.case_insensitive_accuracy - results.clean_baseline.case_insensitive_accuracy)],
+    [Macro-Precision], [#fmt_val(results.clean_baseline.macro_precision)], [#fmt_val(results.robust_cnn.macro_precision)], [#fmt_diff(results.robust_cnn.macro_precision - results.clean_baseline.macro_precision)],
+    [Macro-Recall], [#fmt_val(results.clean_baseline.macro_recall)], [#fmt_val(results.robust_cnn.macro_recall)], [#fmt_diff(results.robust_cnn.macro_recall - results.clean_baseline.macro_recall)],
+    [Macro-F1], [#fmt_val(results.clean_baseline.macro_f1)], [#fmt_val(results.robust_cnn.macro_f1)], [#fmt_diff(results.robust_cnn.macro_f1 - results.clean_baseline.macro_f1)],
   ),
   caption: [Zestawienie metryk ewaluacji na czystym zbiorze testowym EMNIST ByClass.],
 ) <tab-czyste-metryki>
@@ -33,13 +34,13 @@ Oba modele poddano testom na 19 dyskretnych poziomach degradacji o wzrastającym
     columns: (2.5fr, 1.2fr, 1.2fr, 1.3fr),
     align: (left, center, center, center),
     table.header([*Warunek degradacji*], [*Model A (Czysty)*], [*Model B (Odporny)*], [*Zysk Modelu B*]),
-    [Rozmycie Gaussa ($sigma = 1.0$)], [#results.clean_baseline.blur_sigma_1_0%], [#results.robust_cnn.blur_sigma_1_0%], [+#(results.robust_cnn.blur_sigma_1_0 - results.clean_baseline.blur_sigma_1_0) p.p.],
-    [Rozmycie Gaussa ($sigma = 2.0$)], [#results.clean_baseline.blur_sigma_2_0%], [#results.robust_cnn.blur_sigma_2_0%], [+#(results.robust_cnn.blur_sigma_2_0 - results.clean_baseline.blur_sigma_2_0) p.p.],
-    [Rozmycie Gaussa ($sigma = 3.0$)], [#results.clean_baseline.blur_sigma_3_0%], [#results.robust_cnn.blur_sigma_3_0%], [+#(results.robust_cnn.blur_sigma_3_0 - results.clean_baseline.blur_sigma_3_0) p.p.],
-    [Szum Gaussa ($s = 0.15$)], [#results.clean_baseline.noise_std_0_15%], [#results.robust_cnn.noise_std_0_15%], [+#(results.robust_cnn.noise_std_0_15 - results.clean_baseline.noise_std_0_15) p.p.],
-    [Szum Gaussa ($s = 0.20$)], [#results.clean_baseline.noise_std_0_20%], [#results.robust_cnn.noise_std_0_20%], [+#(results.robust_cnn.noise_std_0_20 - results.clean_baseline.noise_std_0_20) p.p.],
-    [Perspektywa ($p = 0.15$)], [#results.clean_baseline.perspective_0_15%], [#results.robust_cnn.perspective_0_15%], [+#(results.robust_cnn.perspective_0_15 - results.clean_baseline.perspective_0_15) p.p.],
-    [Perspektywa ($p = 0.25$)], [#results.clean_baseline.perspective_0_25%], [#results.robust_cnn.perspective_0_25%], [+#(results.robust_cnn.perspective_0_25 - results.clean_baseline.perspective_0_25) p.p.],
+    [Rozmycie Gaussa ($sigma = 1.0$)], [#fmt_val(results.clean_baseline.blur_sigma_1_0)], [#fmt_val(results.robust_cnn.blur_sigma_1_0)], [#fmt_diff(results.robust_cnn.blur_sigma_1_0 - results.clean_baseline.blur_sigma_1_0)],
+    [Rozmycie Gaussa ($sigma = 2.0$)], [#fmt_val(results.clean_baseline.blur_sigma_2_0)], [#fmt_val(results.robust_cnn.blur_sigma_2_0)], [#fmt_diff(results.robust_cnn.blur_sigma_2_0 - results.clean_baseline.blur_sigma_2_0)],
+    [Rozmycie Gaussa ($sigma = 3.0$)], [#fmt_val(results.clean_baseline.blur_sigma_3_0)], [#fmt_val(results.robust_cnn.blur_sigma_3_0)], [#fmt_diff(results.robust_cnn.blur_sigma_3_0 - results.clean_baseline.blur_sigma_3_0)],
+    [Szum Gaussa ($s = 0.15$)], [#fmt_val(results.clean_baseline.noise_std_0_15)], [#fmt_val(results.robust_cnn.noise_std_0_15)], [#fmt_diff(results.robust_cnn.noise_std_0_15 - results.clean_baseline.noise_std_0_15)],
+    [Szum Gaussa ($s = 0.20$)], [#fmt_val(results.clean_baseline.noise_std_0_20)], [#fmt_val(results.robust_cnn.noise_std_0_20)], [#fmt_diff(results.robust_cnn.noise_std_0_20 - results.clean_baseline.noise_std_0_20)],
+    [Perspektywa ($p = 0.15$)], [#fmt_val(results.clean_baseline.perspective_0_15)], [#fmt_val(results.robust_cnn.perspective_0_15)], [#fmt_diff(results.robust_cnn.perspective_0_15 - results.clean_baseline.perspective_0_15)],
+    [Perspektywa ($p = 0.25$)], [#fmt_val(results.clean_baseline.perspective_0_25)], [#fmt_val(results.robust_cnn.perspective_0_25)], [#fmt_diff(results.robust_cnn.perspective_0_25 - results.clean_baseline.perspective_0_25)],
   ),
   caption: [Porównanie dokładności w wybranych punktach krytycznych zaburzeń wejściowych.],
 ) <tab-sweepy-tabela>

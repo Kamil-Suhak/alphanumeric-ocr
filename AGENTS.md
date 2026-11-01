@@ -13,13 +13,21 @@ This document establishes the binding architectural constraints, operational inv
 
 2. **Empirical Integrity & Dynamic Binding:**
    - **Zero Hardcoding in Thesis Text:** When authoring or revising Typst chapters, never hardcode or fabricate empirical metrics (accuracy, F1, latency, parameter counts). All values must be imported dynamically from `experiments/outputs/tables/*.json` or `*.csv` (e.g. `#let results = json(...)`).
+   - **Floating Point Precision & Metric Formatting:**
+     - **NEVER output raw unrounded IEEE 754 arithmetic in document text or tables** (e.g. `#(val_b - val_a)`). Raw subtractions result in precision artifacts such as `-0.1600000000000108 p.p.` or `+73.96000000000001 p.p.`.
+     - Always use dedicated rounding and formatting helpers: `fmt_diff(val)` and `fmt_val(val)` (from `template/agh_thesis.typ`) or `calc.round(val, digits: 2)`.
+     - Ensure explicit sign indicators (`+` / `-`) for differences and use the Polish decimal comma (`,`) consistently.
    - **Seed Agnosticism Invariant:** Do not assume a single fixed seed (e.g. 123) is sufficient for scientific conclusions. Experiments must support parameterized seeds across runs to demonstrate statistical robustness and seed-agnosticism.
 
-3. **Data Isolation & Split Integrity:**
+3. **Heading Hierarchy & Numbering Discipline:**
+   - **No Duplicate Section Numbering:** When `#set heading(numbering: ...)` is active in Typst, **NEVER include manual numbers in heading strings**. For example, write `= Podsumowanie wyników empirycznych`, **NEVER** `= 2. Podsumowanie wyników empirycznych`.
+   - **Correct Heading Level for Standalone Reports:** In standalone milestone reports (`milestones/milestone<n>/main.typ`), use top-level headings (`=`) for primary sections so Typst does not prepend a zero chapter counter (which causes `0.2. 2.`).
+
+4. **Data Isolation & Split Integrity:**
    - The official EMNIST test split (**116,323 samples**) is strictly isolated and frozen. Under no circumstances may test samples be used for fitting normalization, hyperparameter tuning, or degradation parameter selection.
    - Training and validation splits are permanently locked in `experiments/manifests/train_indices.csv` and `val_indices.csv`.
 
-4. **Experiment Output Organization & Diligent Naming:**
+5. **Experiment Output Organization & Diligent Naming:**
    - Every experiment run must be placed in a dedicated, numbered, or semantically named folder under `experiments/outputs/runs/` (e.g., `EXP-001_baseline/`, `EXP-002_robust/`).
    - Never save loose figures directly to `experiments/outputs/`. Route figures to their specific subdirectories:
      - `experiments/outputs/runs/<RUN_ID>/` for run-specific curves and confusion matrices.
@@ -27,7 +35,7 @@ This document establishes the binding architectural constraints, operational inv
      - `experiments/outputs/diagnostics/` for inspection grids and orientation checks.
      - `experiments/outputs/tables/` for aggregated JSON/CSV summary tables.
 
-5. **Document & Citation Standards:**
+6. **Document & Citation Standards:**
    - **Typst Only:** LaTeX is deprecated. Do not introduce TeX files, `.aux`, `.bcf`, or BibTeX `.bib` files.
    - **Hayagriva YAML Bibliography:** All references must be stored in `document/references/library.yaml` using strict Hayagriva YAML schema (`type: article`, `type: conference`, `author: [...]`, `date: ...`).
    - **Supervisor Milestones:** Independent progress reports submitted to the supervisor reside in `milestones/milestone<n>/` as standalone Typst workspaces.
@@ -37,11 +45,11 @@ This document establishes the binding architectural constraints, operational inv
 ## 2. Repository Layout & Role Mapping
 
 ```text
-thesis/
+alphanumeric_ocr/
 ├── document/             # Main thesis document (Typst)
 │   ├── main.typ          # Root entrypoint
 │   ├── metadata.typ      # Title, author, supervisor, faculty settings
-│   ├── template/         # AGH layout & formatting specifications
+│   ├── template/         # AGH layout & formatting specifications (agh_thesis.typ)
 │   ├── chapters/         # Modular chapter files (01_wstep.typ ... 06_wnioski.typ)
 │   └── references/       # Hayagriva YAML bibliography (library.yaml)
 │
