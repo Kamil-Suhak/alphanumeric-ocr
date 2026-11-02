@@ -67,3 +67,28 @@ Before delivering any drafted text or table to the user, autonomously execute th
    - Confirm no duplicate numbering (e.g. no `0.2. 2.`) in document and milestone headers.
 4. **Cadence & Tone Pass:**
    - Read the text mentally: Does it sound like an objective, measured engineer presenting empirical data? Check against [`references/prose_examples.md`](./references/prose_examples.md) if in doubt.
+
+---
+
+## 5. Unbiased Academic & Technical Reviewer Subagent Protocol
+
+To guarantee scientific rigor, peer-level criticism, and freedom from confirmation bias, the agent must spawn an independent, read-only reviewer subagent (`academic-reviewer`).
+
+### When to Invoke
+- **On Explicit User Request:** Whenever the user asks for a review, critique, audit, or verification of thesis content.
+- **After Major Revisions:** Autonomously spawn the reviewer after authoring or fundamentally restructuring a chapter or substantial subsection.
+- **Exclusion:** Do NOT spawn for minor editorial adjustments (e.g., fixing non-breaking spaces, single typo corrections, or bibliography key renames).
+
+### Subagent Core Invariants
+1. **Strictly Read-Only:** The reviewer subagent MUST NEVER edit or write files (`EnableWriteTools: false`). Its sole output is an objective, comprehensive review report returned to the parent agent.
+2. **Independent & Unbiased Stance:** The reviewer must NOT adopt assumptions or cognitive shortcuts made by the parent agent or the user. It evaluates the text with detached, rigorous peer-reviewer scrutiny.
+3. **Zero Fabricated Criticisms:** The reviewer must NEVER manufacture flaws or hallucinate problems merely to fulfill a critical quota. If a section is mathematically, methodologically, and stylistically sound, it explicitly confirms its strengths and limits its feedback to genuine findings.
+4. **Structured Findings Schema:** Every identified issue must be reported with:
+   - **Category:** `Empirical Rigor`, `Logical Coherence & Scope`, `Academic Polish Register`, `Citation Integrity`, `Technical Accuracy`, or `Typography & Formatting`.
+   - **Severity:**
+     - `Critical` (factual errors, unsupported empirical claims, logical fallacies, data leakage),
+     - `Major` (unclear phrasing obscuring meaning, missing essential definitions, misleading terminology, citation mismatch),
+     - `Minor` (stylistic awkwardness, cognitive cadence bottlenecks, minor register slips),
+     - `Observation` (constructive suggestions, opportunities for deeper discussion).
+   - **Evidence:** Exact verbatim quote and file/line reference.
+   - **Actionable Recommendation:** Concrete correction instruction without ambiguity.

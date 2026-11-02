@@ -42,7 +42,7 @@
 ) = {
   // 1. Podstawowe ustawienia dokumentu i strony
   set document(title: title_pl, author: author)
-  
+
   set page(
     paper: "a4",
     margin: (
@@ -59,8 +59,7 @@
         set text(size: 8.5pt, fill: rgb("#555555"))
         grid(
           columns: (1fr, auto),
-          align(left + bottom)[#author --- #title_pl],
-          align(right + bottom)[#page_num],
+          align(left + bottom)[#author --- #title_pl], align(right + bottom)[#page_num],
         )
         v(-0.15cm)
         line(length: 100%, stroke: 0.5pt + rgb("#cccccc"))
@@ -92,7 +91,7 @@
 
   // 3. Hierarchia nagłówków
   set heading(numbering: "1.1.")
-  
+
   show heading: it => {
     set text(weight: "bold")
     let num_prefix = if it.numbering != none {
@@ -124,12 +123,12 @@
   // ==========================================
   align(center)[
     #image("../assets/agh_logo.jpg", width: 8.5cm)
-    
+
     #v(0.6cm)
     #text(size: 11pt, weight: "bold", hyphenate: false)[
       WYDZIAŁ ELEKTROTECHNIKI, AUTOMATYKI, INFORMATYKI\ I INŻYNIERII BIOMEDYCZNEJ
     ]
-    
+
     #if department != "" [
       #v(0.2cm)
       #text(size: 11pt, weight: "medium")[#department]
@@ -139,7 +138,7 @@
     #text(size: 16pt, weight: "bold")[Projekt dyplomowy]
 
     #v(1.4cm)
-    #text(size: 14pt, weight: "bold", hyphenate: false)[#title_pl]
+    #text(size: 14pt, style: "italic", hyphenate: false)[#title_pl]
 
     #v(0.3cm)
     #text(size: 11.5pt, style: "italic", hyphenate: false)[#title_en]
@@ -159,14 +158,6 @@
 
     #v(1fr)
     #text(size: 11pt)[#city, #year]
-
-    #v(0.4cm)
-    #align(left)[
-      #text(size: 8pt, fill: rgb("#555555"))[
-        \* Jeżeli praca została napisana w języku innym niż język polski \
-        \*\* Jeżeli praca została napisana w języku innym niż język angielski
-      ]
-    ]
   ]
 
   // Reset licznika stron po stronie tytułowej
