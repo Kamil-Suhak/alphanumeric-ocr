@@ -1,13 +1,13 @@
 // Metadane pracy inżynierskiej AGH
 #let title_pl = "Rozpoznawanie znaków alfanumerycznych w trudnych warunkach środowiskowych z zastosowaniem konwolucyjnych sieci neuronowych"
 #let title_en = "Alphanumeric Character Recognition in Harsh Environmental Conditions Using Convolutional Neural Networks"
-#let author = "Kamil Suhak"
+#let author = "Kamil Sebastian Suhak"
 #let album_no = "123456" // Uzupełnij numer albumu
-#let supervisor = "dr hab. inż. Jan Kowalski, prof. AGH" // Uzupełnij dane promotora
+#let supervisor = "dr hab. inż. Adam Głowacz"
 #let faculty = "Wydział Elektrotechniki, Automatyki, Informatyki i Inżynierii Biomedycznej"
-#let department = "Katedra Informatyki Stosowanej"
-#let field_of_study = "Informatyka"
-#let specialization = "Inżynieria Oprogramowania i Systemów"
+#let department = "Katedra Automatyki i Robotyki"
+#let field_of_study = "Technologie Przemysłu 4.0"
+#let specialization = ""
 #let city = "Kraków"
 #let year = "2026"
 

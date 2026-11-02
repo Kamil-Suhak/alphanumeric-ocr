@@ -53,8 +53,9 @@
     ),
     header: context {
       let page_num = counter(page).get().first()
-      // Ukryj nagłówek na stronie tytułowej (strona 1)
-      if page_num > 1 {
+      let in_chapters = counter(heading.where(level: 1)).get().first() > 0
+      // Wyświetlaj nagłówek wyłącznie w treści rozdziałów (po spisie treści)
+      if in_chapters {
         set text(size: 8.5pt, fill: rgb("#555555"))
         grid(
           columns: (1fr, auto),
@@ -119,47 +120,53 @@
   }
 
   // ==========================================
-  // STRONA TYTUŁOWA AGH
+  // STRONA TYTUŁOWA AGH (wzór Z1A WEAIiIB)
   // ==========================================
   align(center)[
-    #text(size: 14pt, weight: "bold")[AKADEMIA GÓRNICZO-HUTNICZA\ IM. STANISŁAWA STASZICA W KRAKOWIE]
+    #image("../assets/agh_logo.jpg", width: 8.5cm)
     
-    #v(0.4cm)
-    #text(size: 12pt, weight: "bold")[#faculty]
+    #v(0.6cm)
+    #text(size: 11pt, weight: "bold", hyphenate: false)[
+      WYDZIAŁ ELEKTROTECHNIKI, AUTOMATYKI, INFORMATYKI\ I INŻYNIERII BIOMEDYCZNEJ
+    ]
     
     #if department != "" [
       #v(0.2cm)
-      #text(size: 11pt)[#department]
+      #text(size: 11pt, weight: "medium")[#department]
     ]
 
-    #v(3.0cm)
-    #text(size: 12pt)[Kierunek: #field_of_study]
+    #v(1.8cm)
+    #text(size: 16pt, weight: "bold")[Projekt dyplomowy]
 
-    #v(1.0cm)
-    #text(size: 18pt, weight: "bold")[PRACA INŻYNIERSKA]
+    #v(1.4cm)
+    #text(size: 14pt, weight: "bold", hyphenate: false)[#title_pl]
 
-    #v(1.5cm)
-    #text(size: 14pt, weight: "bold")[#title_pl]
+    #v(0.3cm)
+    #text(size: 11.5pt, style: "italic", hyphenate: false)[#title_en]
 
-    #v(0.4cm)
-    #text(size: 12pt, style: "italic")[#title_en]
-
-    #v(2.5cm)
-    #align(right)[
-      #block(width: 60%)[
-        #set align(left)
+    #v(2.2cm)
+    #align(left)[
+      #block(inset: (left: 2.0cm))[
         #grid(
           columns: (auto, auto),
-          gutter: 0.8em,
+          gutter: 1.0em,
           [Autor:], [*#author*],
-          [Nr albumu:], [#album_no],
-          [Promotor:], [*#supervisor*],
+          [Kierunek studiów:], [*#field_of_study*],
+          [Opiekun pracy:], [*#supervisor*],
         )
       ]
     ]
 
     #v(1fr)
     #text(size: 11pt)[#city, #year]
+
+    #v(0.4cm)
+    #align(left)[
+      #text(size: 8pt, fill: rgb("#555555"))[
+        \* Jeżeli praca została napisana w języku innym niż język polski \
+        \*\* Jeżeli praca została napisana w języku innym niż język angielski
+      ]
+    ]
   ]
 
   // Reset licznika stron po stronie tytułowej
