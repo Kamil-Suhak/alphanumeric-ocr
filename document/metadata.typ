@@ -1,6 +1,6 @@
 // Metadane pracy inżynierskiej AGH
-#let title_pl = "Badanie odporności kompaktowej sieci konwolucyjnej na degradacje środowiskowe w zadaniu klasyfikacji znaków alfanumerycznych"
-#let title_en = "Investigating Compact Convolutional Neural Network Robustness Against Environmental Degradations in Alphanumeric Character Classification"
+#let title_pl = "Rozpoznawanie znaków alfanumerycznych w trudnych warunkach środowiskowych z zastosowaniem konwolucyjnych sieci neuronowych"
+#let title_en = "Alphanumeric Character Recognition in Harsh Environmental Conditions Using Convolutional Neural Networks"
 #let author = "Kamil Suhak"
 #let album_no = "123456" // Uzupełnij numer albumu
 #let supervisor = "dr hab. inż. Jan Kowalski, prof. AGH" // Uzupełnij dane promotora

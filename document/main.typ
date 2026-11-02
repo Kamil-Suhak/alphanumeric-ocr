@@ -17,7 +17,7 @@
 )
 
 // ==========================================
-// SPISY TREŚCI, RYSUNKÓW I TABEL
+// SPIS TREŚCI
 // ==========================================
 #outline(
   title: [Spis treści],
@@ -25,34 +25,44 @@
   indent: auto,
 )
 
-#v(1cm)
-#outline(
-  title: [Spis rysunków],
-  target: figure.where(kind: image),
-)
-
-#v(1cm)
-#outline(
-  title: [Spis tabel],
-  target: figure.where(kind: table),
-)
-
 // ==========================================
 // ROZDZIAŁY PRACY
 // ==========================================
 #include "chapters/01_wstep.typ"
-#include "chapters/02_teoria_i_literatura.typ"
-#include "chapters/03_cel_i_zakres.typ"
-#include "chapters/04_metodyka_i_architektura.typ"
-#include "chapters/05_wyniki_eksperymentow.typ"
-#include "chapters/06_wnioski_i_rozwoj.typ"
+#include "chapters/02_podstawy_teoretyczne.typ"
+#include "chapters/03_metodyka_badan.typ"
+#include "chapters/04_implementacja_systemu.typ"
+#include "chapters/05_wyniki_badan.typ"
+#include "chapters/06_podsumowanie_i_wnioski.typ"
 
 // ==========================================
-// BIBLIOGRAFIA (Hayagriva YAML)
+// WYKAZ LITERATURY (Hayagriva YAML)
 // ==========================================
 #pagebreak()
 #bibliography(
   "references/library.yaml",
   style: "ieee",
-  title: "Bibliografia",
+  title: "Wykaz literatury",
 )
+
+// ==========================================
+// SPISY RYSUNKÓW I TABEL
+// ==========================================
+#pagebreak()
+#heading(level: 1, numbering: none)[Spis rysunków]
+#outline(
+  title: none,
+  target: figure.where(kind: image),
+)
+
+#pagebreak()
+#heading(level: 1, numbering: none)[Spis tabel]
+#outline(
+  title: none,
+  target: figure.where(kind: table),
+)
+
+// ==========================================
+// ZAŁĄCZNIKI
+// ==========================================
+#include "chapters/07_zalaczniki.typ"

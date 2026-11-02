@@ -55,12 +55,13 @@
       let page_num = counter(page).get().first()
       // Ukryj nagłówek na stronie tytułowej (strona 1)
       if page_num > 1 {
-        set text(size: 9pt, fill: rgb("#555555"))
+        set text(size: 8.5pt, fill: rgb("#555555"))
         grid(
           columns: (1fr, auto),
-          align(left)[#author --- #title_pl],
-          align(right)[#page_num],
+          align(left + bottom)[#author --- #title_pl],
+          align(right + bottom)[#page_num],
         )
+        v(-0.15cm)
         line(length: 100%, stroke: 0.5pt + rgb("#cccccc"))
       }
     },
@@ -93,21 +94,26 @@
   
   show heading: it => {
     set text(weight: "bold")
+    let num_prefix = if it.numbering != none {
+      counter(heading).display() + " "
+    } else {
+      ""
+    }
     if it.level == 1 {
-      // Rozdział główny: nowa strona, 14pt bold
+      // Rozdział główny: nowa strona, 15pt bold
       pagebreak(weak: true)
       v(1.5cm)
-      text(size: 15pt)[#counter(heading).display() #it.body]
+      text(size: 15pt)[#num_prefix#it.body]
       v(1cm)
     } else if it.level == 2 {
-      // Podrozdział: 12.5pt bold
+      // Podrozdział: 13pt bold
       v(0.8cm)
-      text(size: 13pt)[#counter(heading).display() #it.body]
+      text(size: 13pt)[#num_prefix#it.body]
       v(0.4cm)
     } else {
-      // Dalsze poziomy
+      // Dalsze poziomy: 12pt bold
       v(0.5cm)
-      text(size: 12pt)[#counter(heading).display() #it.body]
+      text(size: 12pt)[#num_prefix#it.body]
       v(0.3cm)
     }
   }
