@@ -23,11 +23,18 @@ This document establishes the binding architectural constraints, operational inv
    - **No Duplicate Section Numbering:** When `#set heading(numbering: ...)` is active in Typst, **NEVER include manual numbers in heading strings**. For example, write `= Podsumowanie wyników empirycznych`, **NEVER** `= 2. Podsumowanie wyników empirycznych`.
    - **Correct Heading Level for Standalone Reports:** In standalone milestone reports (`milestones/milestone<n>/main.typ`), use top-level headings (`=`) for primary sections so Typst does not prepend a zero chapter counter (which causes `0.2. 2.`).
 
-4. **Data Isolation & Split Integrity:**
+4. **Academic Prose & Style Standard (Mandatory `thesis` Skill):**
+   - Whenever drafting, extending, or reviewing thesis chapters or milestone reports, **always consult and adhere to `.agents/skills/thesis/SKILL.md`**.
+   - **Eliminate AI Clichés & Hype:** Avoid overdramatic words (*"rewolucyjny"*, *"bezsprzecznie"*, *"uniwersalne panaceum"*, *"drastycznie"*, *"perfekcyjny"*).
+   - **Pacing & Cognitive Cadence:** Sentences must be under 25–30 words. Include transitional breathing room to prevent dense, unreadable walls of specifications.
+   - **Acronym Hygiene:** Never stack acronyms in parentheses (e.g. no *"OCR (Optical Character Recognition) w systemach CV (Computer Vision)"*). Define on first use only.
+   - **Autonomous Compilation Verification:** After modifying any `.typ` file, autonomously run `typst compile --root . document/main.typ document/main.pdf` and verify zero errors before completing the turn.
+
+5. **Data Isolation & Split Integrity:**
    - The official EMNIST test split (**116,323 samples**) is strictly isolated and frozen. Under no circumstances may test samples be used for fitting normalization, hyperparameter tuning, or degradation parameter selection.
    - Training and validation splits are permanently locked in `experiments/manifests/train_indices.csv` and `val_indices.csv`.
 
-5. **Experiment Output Organization & Diligent Naming:**
+6. **Experiment Output Organization & Diligent Naming:**
    - Every experiment run must be placed in a dedicated, numbered, or semantically named folder under `experiments/outputs/runs/` (e.g., `EXP-001_baseline/`, `EXP-002_robust/`).
    - Never save loose figures directly to `experiments/outputs/`. Route figures to their specific subdirectories:
      - `experiments/outputs/runs/<RUN_ID>/` for run-specific curves and confusion matrices.
@@ -35,7 +42,7 @@ This document establishes the binding architectural constraints, operational inv
      - `experiments/outputs/diagnostics/` for inspection grids and orientation checks.
      - `experiments/outputs/tables/` for aggregated JSON/CSV summary tables.
 
-6. **Document & Citation Standards:**
+7. **Document & Citation Standards:**
    - **Typst Only:** LaTeX is deprecated. Do not introduce TeX files, `.aux`, `.bcf`, or BibTeX `.bib` files.
    - **Hayagriva YAML Bibliography:** All references must be stored in `document/references/library.yaml` using strict Hayagriva YAML schema (`type: article`, `type: conference`, `author: [...]`, `date: ...`).
    - **Supervisor Milestones:** Independent progress reports submitted to the supervisor reside in `milestones/milestone<n>/` as standalone Typst workspaces.
@@ -46,6 +53,11 @@ This document establishes the binding architectural constraints, operational inv
 
 ```text
 alphanumeric-ocr/
+├── .agents/
+│   └── skills/
+│       └── thesis/       # Deep authoring, style, review, and Typst recipes skill
+│           └── SKILL.md
+│
 ├── document/             # Main thesis document (Typst)
 │   ├── main.typ          # Root entrypoint
 │   ├── metadata.typ      # Title, author, supervisor, faculty settings
