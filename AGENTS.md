@@ -47,6 +47,10 @@ This document establishes the binding architectural constraints, operational inv
    - **Hayagriva YAML Bibliography:** All references must be stored in `document/references/library.yaml` using strict Hayagriva YAML schema (`type: article`, `type: conference`, `author: [...]`, `date: ...`).
    - **Supervisor Milestones:** Independent progress reports submitted to the supervisor reside in `milestones/milestone<n>/` as standalone Typst workspaces.
 
+8. **Language Protocol:**
+   - **Conversation in English at all times:** All agent conversations, updates, reasoning, explanations, and reviews with the user MUST be conducted strictly in English at all times.
+   - **Thesis in Polish:** The academic thesis text, chapters, abstracts, milestone reports, and Typst documents are authored in formal academic Polish according to AGH university guidelines.
+
 ---
 
 ## 2. Repository Layout & Role Mapping

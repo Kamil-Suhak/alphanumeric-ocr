@@ -7,7 +7,7 @@ Rozpoznawanie znaków i~tekstu z~obrazów (ang. _Optical Character Recognition_,
 
 Przełom w~dziedzinie OCR wiąże się z~zastosowaniem sztucznych sieci neuronowych, zapoczątkowanym przez LeCuna i~współpracowników @lecun1998lenet. Architektura LeNet-5 dowiodła, że bezpośrednie przetwarzanie surowej macierzy pikseli za pomocą operacji splotu pozwala na automatyczną hierarchiczną ekstrakcję cech, przewyższając metody oparte na ręcznej inżynierii deskryptorów.
 
-Współczesne systemy przetwarzania dokumentów i~odczytu tekstu w~scenach naturalnych (ang. _Scene Text Recognition_, STR) dzielą się zazwyczaj na dwa współpracujące moduły:
+Współczesne systemy przetwarzania dokumentów i~odczytu tekstu w~scenach naturalnych (ang. _Scene Text Recognition_, STR) dzielą się zazwyczaj na dwa współpracujące moduły @ye2015text, @chen2021text:
 1. *Detekcję tekstu:* Odpowiedzialną za lokalizację obszarów zawierających inskrypcje oraz wycięcie ich w~postaci wyprostowanych ramek ograniczających (np. algorytmy DBNet czy CRAFT).
 2. *Rozpoznawanie znaków lub sekwencji:* Realizujące klasyfikację wyizolowanych wycinków znaków lub transkrypcję całych linii tekstu.
 W~zadaniach przemysłowych, takich jak inspekcja numerów seryjnych na liniach produkcyjnych czy weryfikacja oznaczeń komponentów, decydującą rolę odgrywa precyzyjna i~szybka klasyfikacja wyizolowanych znaków alfanumerycznych przy minimalnym narzucie obliczeniowym.
@@ -64,7 +64,7 @@ $ theta_(t+1) = theta_t - eta_t (frac(hat(m)_t, sqrt(hat(v)_t) + epsilon) + lamb
 Mechanizm ten zapewnia stabilną regularyzację przestrzeni wagowej i~zapobiega eksplozji normy wag w~warunkach intensywnego treningu.
 
 == Odporność modeli na degradację obrazu
-Mimo znakomitych wyników osiąganych na nieskażonych zbiorach testowych, konwolucyjne sieci neuronowe cechują się dużą wrażliwością na przesunięcia dystrybucji danych (ang. _out-of-distribution shifts_) @hendrycks2019benchmarking. Standardowo trenowane filtry splotowe polegają w~znacznym stopniu na wysokoczęstotliwościowych składowych tekstury obrazu. Zjawiska degradacji środowiskowej niszczą te składowe lub wprowadzają artefakty wprowadzające model w~błąd:
+Mimo znakomitych wyników osiąganych na nieskażonych zbiorach testowych, konwolucyjne sieci neuronowe cechują się dużą wrażliwością na przesunięcia dystrybucji danych (ang. _out-of-distribution shifts_) @hendrycks2019benchmarking, @dodge2016understanding. Standardowo trenowane filtry splotowe polegają w~znacznym stopniu na wysokoczęstotliwościowych składowych tekstury obrazu. Zjawiska degradacji środowiskowej niszczą te składowe lub wprowadzają zakłócenia utrudniające niezawodną ekstrakcję cech @trivedi2026improving:
 1. *Rozmycie optyczne i~ruchowe:* Powstające na skutek błędnego ustawienia ostrości aparatu lub ruchu obiektu względem sensora. Matematycznie modelowane jest jako splot sygnału wejściowego $I(x, y)$ z~dwuwymiarowym jądrem Gaussa $G_sigma$:
    $ G_sigma(x, y) = frac(1, 2 pi sigma^2) exp(- frac(x^2 + y^2, 2 sigma^2)), quad I_text("blur") = (I * G_sigma)(x, y) $
 2. *Szum matrycy światłoczułej:* Wynikający z~zakłóceń termicznych i~fluktuacji fotonowych w~słabych warunkach oświetleniowych, aproksymowany jako addytywny szum Gaussa:

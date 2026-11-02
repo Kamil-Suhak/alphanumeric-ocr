@@ -13,7 +13,7 @@ cohen2017emnist:
     title: "2017 International Joint Conference on Neural Networks (IJCNN)"
   page-range: 2921-2926
   serial-number:
-    doi: 10.1109/IJCNN.2017.7966039
+    doi: 10.1109/IJCNN.2017.7966217
 
 lecun1998lenet:
   type: article
@@ -109,3 +109,78 @@ srivastava2014dropout:
     volume: 15
     issue: 1
   page-range: 1929-1958
+
+chen2021text:
+  type: article
+  title: "Text Recognition in the Wild: A Survey"
+  author:
+    - Chen, Xiaoxue
+    - Jin, Lianwen
+    - Zhu, Yuanzhi
+    - Luo, Canjie
+    - Wang, Tianwei
+  date: 2021
+  parent:
+    title: "ACM Computing Surveys"
+    volume: 54
+    issue: 2
+  page-range: 1-35
+  serial-number:
+    doi: 10.1145/3440756
+
+dodge2016understanding:
+  type: conference
+  title: "Understanding How Image Quality Affects Deep Neural Networks"
+  author:
+    - Dodge, Samuel
+    - Karam, Lina
+  date: 2016
+  parent:
+    title: "2016 Eighth International Conference on Quality of Multimedia Experience (QoMEX)"
+  page-range: 1-6
+  serial-number:
+    doi: 10.1109/QoMEX.2016.7498955
+
+trivedi2026improving:
+  type: article
+  title: "Improving Optical Character Recognition (OCR) Reliability on Noisy Document Images Using Hybrid Deep Learning and Post-Processing Techniques"
+  author:
+    - Trivedi, Divyanshi
+    - Agarwal, Rashi
+  date: 2026
+  parent:
+    title: "Cureus Journal of Computer Science"
+  serial-number:
+    doi: 10.7759/s44389-026-00152-5
+
+du2013automatic:
+  type: article
+  title: "Automatic License Plate Recognition (ALPR): A State-of-the-Art Review"
+  author:
+    - Du, Shan
+    - Ibrahim, Mahmoud
+    - Shehata, Mohamed
+    - Badawy, Wael
+  date: 2013
+  parent:
+    title: "IEEE Transactions on Circuits and Systems for Video Technology"
+    volume: 23
+    issue: 2
+  page-range: 311-325
+  serial-number:
+    doi: 10.1109/TCSVT.2012.2203741
+
+ye2015text:
+  type: article
+  title: "Text Detection and Recognition in Imagery: A Survey"
+  author:
+    - Ye, Qixiang
+    - Doermann, David
+  date: 2015
+  parent:
+    title: "IEEE Transactions on Pattern Analysis and Machine Intelligence"
+    volume: 37
+    issue: 7
+  page-range: 1480-1500
+  serial-number:
+    doi: 10.1109/TPAMI.2014.2366765
