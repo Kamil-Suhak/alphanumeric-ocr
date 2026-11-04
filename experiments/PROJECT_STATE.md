@@ -100,7 +100,7 @@ A compact convolutional neural network designed for high throughput and embedded
   - Flatten: `128 * 4 * 4 = 2048` features
   - Linear (2048 -> 256) + BatchNorm1D + ReLU + Dropout (p = 0.5)
   - Linear (256 -> 62 classes)
-* **Total Parameters:** 200,030 parameters (~7.6 MB on disk with optimizer states in float32).
+* **Total Parameters:** 634,110 trainable parameters (93,120 in the convolutional feature extractor + 540,990 in the classifier head; 2.42 MB pure FP32 weights, 7.28 MB full checkpoint on disk with AdamW optimizer states).
 
 ---
 

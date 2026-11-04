@@ -184,3 +184,117 @@ ye2015text:
   page-range: 1480-1500
   serial-number:
     doi: 10.1109/TPAMI.2014.2366765
+
+goodfellow2016deep:
+  type: book
+  title: "Deep Learning"
+  author:
+    - Goodfellow, Ian
+    - Bengio, Yoshua
+    - Courville, Aaron
+  date: 2016
+  publisher: "MIT Press"
+
+he2015delving:
+  type: conference
+  title: "Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification"
+  author:
+    - He, Kaiming
+    - Zhang, Xiangyu
+    - Ren, Shaoqing
+    - Sun, Jian
+  date: 2015
+  parent:
+    title: "2015 IEEE International Conference on Computer Vision (ICCV)"
+  page-range: 1026-1034
+  serial-number:
+    doi: 10.1109/ICCV.2015.123
+
+gonzalez2018digital:
+  type: book
+  title: "Digital Image Processing"
+  author:
+    - Gonzalez, Rafael C.
+    - Woods, Richard E.
+  date: 2018
+  edition: 4
+  publisher: "Pearson"
+
+hartley2004multiple:
+  type: book
+  title: "Multiple View Geometry in Computer Vision"
+  author:
+    - Hartley, Richard
+    - Zisserman, Andrew
+  date: 2004
+  edition: 2
+  publisher: "Cambridge University Press"
+  serial-number:
+    doi: 10.1017/CBO9780511811685
+
+vasiljevic2016examining:
+  type: article
+  title: "Examining the Impact of Blur on Recognition by Convolutional Networks"
+  author:
+    - Vasiljevic, Igor
+    - Chakrabarti, Ayan
+    - Shakhnarovich, Gregory
+  date: 2016
+  parent:
+    title: "arXiv preprint arXiv:1611.05760"
+  serial-number:
+    doi: 10.48550/arXiv.1611.05760
+
+grother2016nist:
+  type: report
+  title: "NIST Special Database 19: Handprinted Forms and Characters Database"
+  author:
+    - Grother, Patrick
+    - Hanaoka, Kayee
+  date: 2016
+  publisher: "National Institute of Standards and Technology"
+  serial-number:
+    doi: 10.18434/T4H01C
+
+paszke2019pytorch:
+  type: conference
+  title: "PyTorch: An Imperative Style, High-Performance Deep Learning Library"
+  author:
+    - Paszke, Adam
+    - Gross, Sam
+    - Massa, Francisco
+    - Lerer, Adam
+    - Bradbury, James
+    - Chanan, Gregory
+    - Killeen, Trevor
+    - Lin, Zeming
+    - Gimelshein, Natalia
+    - Antiga, Luca
+    - Desmaison, Alban
+    - Kopf, Andreas
+    - Yang, Edward
+    - DeVito, Zachary
+    - Raison, Martin
+    - Tejani, Alykhan
+    - Chilamkurthy, Sasank
+    - Steiner, Benoit
+    - Fang, Lu
+    - Bai, Junjie
+    - Chintala, Soumith
+  date: 2019
+  parent:
+    title: "Advances in Neural Information Processing Systems (NeurIPS)"
+    volume: 32
+  page-range: 8024-8035
+
+kingma2014adam:
+  type: conference
+  title: "Adam: A Method for Stochastic Optimization"
+  author:
+    - Kingma, Diederik P.
+    - Ba, Jimmy
+  date: 2015
+  parent:
+    title: "International Conference on Learning Representations (ICLR)"
+  serial-number:
+    doi: 10.48550/arXiv.1412.6980
