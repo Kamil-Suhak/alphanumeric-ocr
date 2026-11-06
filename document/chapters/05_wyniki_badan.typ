@@ -3,49 +3,49 @@
 = Wyniki badań i analiza
 
 == Wyniki dla obrazów bez degradacji i dynamika uczenia
-// [Section Guide]: Compare the 25-epoch training and validation trajectories of Model A (EXP-001) and Model B (EXP-002), showing how clean training overfits after Epoch 11 (val loss 0.3328 -> 0.3549) whereas stochastic degradations act as an effective regularizer that improves validation loss monotonically through Epoch 25 (0.3326). Present the pristine test-set comparison table (`accuracy_summary.json`), demonstrating that Model B preserves clean accuracy (87.46% vs. 87.62%, a negligible -0.16 p.p. difference) while improving Macro-Precision (+1.48 p.p.) — directly answering the second part of Research Question 2.
-// Recommended citations: @cohen2017emnist, @shorten2019survey, @srivastava2014dropout
+// [Wskazówki autorskie]: Zestawić 25-epokowe trajektorie uczenia i walidacji Modelu A (EXP-001) oraz Modelu B (EXP-002), wykazując, że uczenie na danych czystych prowadzi do przetrenowania po 11. epoce (wzrost straty walidacyjnej z 0,3328 do 0,3549), podczas gdy stochastyczna augmentacja pełni rolę regularizatora pozwalającego na monotoniczny spadek straty walidacyjnej aż do 25. epoki (0,3326). Zaprezentować tabelę porównawczą na nienaruszonym zbiorze testowym (accuracy_summary.json), potwierdzając zachowanie skuteczności Modelu B na czystych danych (87,46% vs 87,62%, minimalny spadek o 0,16 p.p.) przy wzroście precyzji makro (+1,48 p.p.) – odpowiadając wprost na drugą część Pytania Badawczego 2.
+// Rekomendowana literatura: @cohen2017emnist, @shorten2019survey, @srivastava2014dropout
 
 == Wpływ degradacji na skuteczność klasyfikacji
-// [Section Guide]: Introduce the comparative robustness evaluation across all 19 degradation levels on the 116,323-sample test set (over 4.42 million inference passes) and present the synthetic summary table contrasting Model A and Model B at key severity thresholds. Frame this section around Research Question 1 (collapse dynamics of the baseline model) and Research Question 2 (invariance gains of the robust model).
-// Recommended citations: @hendrycks2019benchmarking, @dodge2016understanding
+// [Wskazówki autorskie]: Wprowadzić do analizy odporności na wszystkich 19 poziomach degradacji na pełnym zbiorze testowym (116 323 próbki, ponad 4,42 mln operacji inferencji) i przedstawić syntetyczną tabelę porównawczą Modelu A i Modelu B dla kluczowych progów zakłóceń. Ustrukturyzować analizę wokół Pytania Badawczego 1 (dynamika załamania modelu bazowego) oraz Pytania Badawczego 2 (skala zysku odporności modelu odpornego).
+// Rekomendowana literatura: @hendrycks2019benchmarking, @dodge2016understanding
 
 === Wpływ rozmycia
-// [Section Guide]: Analyze the Gaussian blur sweep curve (`blur_curve.png` and `blur.csv` for sigma in [0.0, 3.0]), highlighting that Model A collapses below the 50% threshold around sigma approx 1.25 and plunges to 4.28% at sigma = 3.0, whereas Model B retains 86.20% at sigma = 2.0 (+73.96 p.p.) and 64.44% at sigma = 3.0 (+60.16 p.p.). Emphasize the out-of-distribution generalization finding at sigma in {2.5, 3.0}, which exceeds the maximum blur seen during training (sigma <= 2.0).
-// Recommended citations: @vasiljevic2016examining, @dodge2016understanding, @gonzalez2018digital
+// [Wskazówki autorskie]: Dokonać szczegółowej analizy krzywej odporności na rozmycie gaussowskie (blur_curve.png oraz blur.csv dla $sigma in [0,0; 3,0]$), wskazując, że Model A przekracza próg załamania 50% już przy $sigma approx 1,25$ i drastycznie spada do 4,28% przy $sigma = 3,0$, podczas gdy Model B zachowuje 86,20% przy $sigma = 2,0$ (+73,96 p.p.) oraz 64,44% przy $sigma = 3,0$ (+60,16 p.p.). Podkreślić kluczowy wniosek o generalizacji poza dziedzinę uczącą (ang. out-of-distribution) dla $sigma in {2,5; 3,0}$, mimo że maksymalne rozmycie treningowe wynosiło $sigma = 2,0$.
+// Rekomendowana literatura: @vasiljevic2016examining, @dodge2016understanding, @gonzalez2018digital
 
 === Wpływ szumu
-// [Section Guide]: Analyze the additive sensor noise sweep (`noise_curve.png` and `noise.csv` for s in [0.00, 0.20]), contrasting Model A's steep cliff drop beyond s = 0.10 (falling to 37.65% at s = 0.20) with Model B's near-flatline invariance (87.46% -> 86.59%, a total drop of only 0.87 p.p., yielding a +48.94 p.p. advantage). Explain how noise-augmented training forces early convolutional filters to act as implicit spatial low-pass denoisers.
-// Recommended citations: @dodge2016understanding, @hendrycks2019benchmarking, @gonzalez2018digital
+// [Wskazówki autorskie]: Zanalizować przebieg krzywej odporności na szum sensora (noise_curve.png oraz noise.csv dla $s in [0,00; 0,20]$), kontrastując gwałtowne załamanie Modelu A powyżej $s = 0,10$ (spadek do 37,65% przy $s = 0,20$) z niemal całkowitą niewrażliwością Modelu B (spadek z 87,46% do zaledwie 86,59%, czyli ubytek poniżej 0,9 p.p., co daje przewagę +48,94 p.p.). Wyjaśnić, w jaki sposób uczenie z szumem wymusza na początkowych filtrach splotowych funkcję niejawnych, dolnoprzepustowych filtrów odszumiających.
+// Rekomendowana literatura: @dodge2016understanding, @hendrycks2019benchmarking, @gonzalez2018digital
 
 === Wpływ zniekształceń perspektywicznych
-// [Section Guide]: Analyze the projective homography sweep (`perspective_curve.png` and `perspective.csv` for p in [0.00, 0.25]), explaining why spatial pooling gives Model A partial resilience at small tilts before dropping to 64.36% at p = 0.25, while Model B degrades gracefully to 82.83% (+18.47 p.p. advantage). Compare the linear degradation profile of geometric warps against the non-linear cliff collapses observed under blur and noise.
-// Recommended citations: @hartley2004multiple, @hendrycks2019benchmarking
+// [Wskazówki autorskie]: Zanalizować przebieg odporności na dystorsję perspektywiczną (perspective_curve.png oraz perspective.csv dla $p in [0,00; 0,25]$), wyjaśniając, dlaczego agregacja cech w warstwach Max Pooling zapewnia Modelowi A częściową tolerancję na małe kąty skośne, zanim nastąpi spadek do 64,36% przy $p = 0,25$, podczas gdy Model B łagodnie zachowuje 82,83% (+18,47 p.p.). Zestawić liniowy charakter degradacji przy przekształceniach geometrycznych z nieliniowymi klifami obserwowanymi przy rozmyciu i szumie.
+// Rekomendowana literatura: @hartley2004multiple, @hendrycks2019benchmarking
 
 == Analiza macierzy pomyłek i niejednoznaczności klas
-// [Section Guide]: Provide a brief umbrella introduction transitioning from aggregate accuracy curves to class-wise error structure across the 62 alphanumeric categories.
-// Recommended citations: @cohen2017emnist, @grother2016nist
+// [Wskazówki autorskie]: Zapewnić zwięzłe wprowadzenie przechodzące od zagregowanych krzywych dokładności do szczegółowej struktury pomyłek w podziale na 62 kategorie znaków alfanumerycznych.
+// Rekomendowana literatura: @cohen2017emnist, @grother2016nist
 
 === Struktura błędów w macierzy pomyłek
-// [Section Guide]: Examine the 62x62 normalized confusion matrices (`confusion_matrix.png` for EXP-001 and EXP-002), pointing out the strong primary diagonal alongside distinct off-diagonal error clusters Parallel to the main diagonal (uppercase vs. lowercase letters) and specific digit-letter collisions (0/O, 1/l/I, 9/q, 5/S, 2/Z). Show that both models exhibit virtually identical structural confusion patterns on clean data.
-// Recommended citations: @cohen2017emnist, @grother2016nist
+// [Wskazówki autorskie]: Przeanalizować znormalizowane macierze pomyłek $62 times 62$ (confusion_matrix.png dla EXP-001 i EXP-002), wskazując dominującą główną przekątną oraz wyraziste pasma błędów równoległe do przekątnej (zamiana wielkich i małych liter przesuniętych o 26 pozycji) i konkretne kolizje między cyframi a literami (0/O, 1/l/I, 9/q, 5/S, 2/Z). Wykazać, że oba modele wykazują niemal identyczny rozkład strukturalny pomyłek na danych czystych.
+// Rekomendowana literatura: @cohen2017emnist, @grother2016nist
 
 === Niejednoznaczność par homoglificznych i wielkości liter
-// [Section Guide]: Directly answer Research Question 3 by quantifying the impact of unifying the 15 morphologically indistinguishable case pairs under the Case-Insensitive Accuracy metric, which boosts accuracy from 87.62% to 90.96% (+3.34 p.p.) for Model A and from 87.46% to 90.88% (+3.42 p.p.) for Model B. Conclude that over 3.3 p.p. of total test error (~3,880 samples) is an irreducible consequence of cropping isolated characters without baseline or x-height context rather than a classifier flaw.
-// Recommended citations: @cohen2017emnist, @grother2016nist
+// [Wskazówki autorskie]: Bezpośrednio odpowiedzieć na Pytanie Badawcze 3, przedstawiając ilościowe skutki ujednolicenia 15 par znaków nierozróżnialnych morfologicznie w metryce Case-Insensitive Accuracy, co podnosi wynik z 87,62% do 90,96% (+3,34 p.p.) dla Modelu A oraz z 87,46% do 90,88% (+3,42 p.p.) dla Modelu B. Wywieść wniosek, że ponad 3,3 p.p. całkowitego błędu testowego (~3880 próbek) wynika z obiektywnej równoważności wizualnej wyizolowanych glifów pozbawionych linii bazowej, a nie z niedoskonałości klasyfikatora.
+// Rekomendowana literatura: @cohen2017emnist, @grother2016nist
 
 == Analiza wyników dla wielu uruchomień
-// [Section Guide — Stage 2 Pending Experiment Slot]: Present the statistical repeatability of the training and robustness results across multiple independent pseudorandom seeds (mean +/- standard deviation of clean accuracy and key degradation points), directly addressing Research Question 4 (seed-agnosticism). (Note: If multi-seed runs are not conducted in Stage 2, omit this section and remove Question 4 from Chapter 1).
-// Recommended citations: @hendrycks2019benchmarking
+// [Wskazówki autorskie – Miejsce na eksperyment Etapu 2]: Przedstawić powtarzalność statystyczną procesu uczenia i charakterystyk odpornościowych dla kilku niezależnych ziaren losowości (wartości średnie +/- odchylenie standardowe dokładności bazowej i kluczowych punktów degradacji), odpowiadając wprost na Pytanie Badawcze 4 (odporność na dobór ziarna, ang. seed-agnosticism). (Uwaga: W przypadku rezygnacji z powtórzeń w Etapie 2, podrozdział należy usunąć, a Pytanie 4 wykreślić z Rozdziału 1).
+// Rekomendowana literatura: @hendrycks2019benchmarking
 
 == Ocena modeli na obrazach rzeczywistych
-// [Section Guide — Stage 2 Pending Experiment Slot]: Evaluate zero-shot domain transfer of Model A and Model B on external real-world character crops (smartphone photographs under natural lighting/tilt and/or the Chars74k benchmark) to verify whether synthetic training augmentations improve generalization to physical camera captures. (Note: Keep or adapt based on which Stage 2 transfer experiments yield the strongest insights).
-// Recommended citations: @campos2009chars74k, @chen2021text
+// [Wskazówki autorskie – Miejsce na eksperyment Etapu 2]: Dokonać ewaluacji transferu zerostopniowego (ang. zero-shot domain transfer) Modelu A i Modelu B na zewnętrznych wycinkach znaków rzeczywistych (zdjęcia wykonane smartfonem w zróżnicowanym oświetleniu i ujęciu kątowym lub zbiór Chars74k), aby sprawdzić, w jakim stopniu syntetyczna augmentacja degradacyjna poprawia generalizację na fizyczne zdjęcia z aparatów. (Uwaga: Dostosować treść w zależności od tego, które eksperymenty transferu z Etapu 2 przyniosą najbardziej wartościowe wnioski).
+// Rekomendowana literatura: @campos2009chars74k, @chen2021text
 
 == Analiza wydajności obliczeniowej i profilowanie sprzętowe
-// [Section Guide]: Present the empirical hardware profiling results from `practicality.json`: 634,110 parameters, 2.42 MB FP32 weight footprint (7.28 MB full checkpoint), CPU inference latency of 1.08 ms/char at batch=1 (2,122.6 chars/s at batch=32), and GPU latency of 0.59 ms/char at batch=1 (46,171.9 chars/s at batch=32). Discuss practical suitability for real-time edge and embedded Industry 4.0 deployment without cloud accelerators.
-// Recommended citations: @paszke2019pytorch, @du2013automatic
+// [Wskazówki autorskie]: Zaprezentować wyniki profilowania sprzętowego z pliku practicality.json: 634 110 parametrów, rozmiar wag FP32 wynoszący 2,42 MB (pełny checkpoint 7,28 MB), opóźnienie inferencji na CPU na poziomie 1,08 ms/znak dla partii 1 (przepustowość 2122,6 znaków/s dla partii 32) oraz opóźnienie na GPU równe 0,59 ms/znak dla partii 1 (46 171,9 znaków/s dla partii 32). Przedyskutować praktyczną przydatność sieci do wdrożeń brzegowych i systemów wbudowanych Przemysłu 4.0 czasu rzeczywistego bez konieczności stosowania akceleratorów chmurowych.
+// Rekomendowana literatura: @paszke2019pytorch, @du2013automatic
 
 == Dyskusja wyników
-// [Section Guide]: Synthesize the empirical findings across all experiments: explain why a single multi-degradation training pipeline achieves strong invariance across three mathematically distinct perturbation domains without sacrificing clean-data accuracy (no robustness-accuracy trade-off). Contrast the out-of-distribution resilience under blur with the theoretical error ceiling imposed by homoglyphs, connecting the empirical results back to literature benchmarks.
-// Recommended citations: @hendrycks2019benchmarking, @dodge2016understanding, @vasiljevic2016examining, @cohen2017emnist, @shorten2019survey
+// [Wskazówki autorskie]: Dokonać syntetycznego podsumowania i dyskusji rezultatów: wyjaśnić, dlaczego pojedynczy potok augmentacji wielorodzajowej zapewnia wysoką odporność w trzech odmiennych matematycznie modalnościach zaburzeń bez spadku dokładności na danych czystych (brak zjawiska kompromisu między odpornością a dokładnością, ang. robustness-accuracy trade-off). Skonfrontować odporność na rozmycie poza zakresem treningowym z teoretycznym sufitem dokładności narzuconym przez pary homoglificzne, odnosząc uzyskane wyniki do publikacji benchmarkowych w literaturze.
+// Rekomendowana literatura: @hendrycks2019benchmarking, @dodge2016understanding, @vasiljevic2016examining, @cohen2017emnist, @shorten2019survey
