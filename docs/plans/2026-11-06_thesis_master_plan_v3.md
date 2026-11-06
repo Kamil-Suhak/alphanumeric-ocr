@@ -76,11 +76,14 @@ flowchart TD
 
 ## 3. Detailed Specifications per Phase
 
-### Phase 1: Multi-Seed Statistical Validation & Fixed Corruption Bank
+### Phase 1: Multi-Seed Statistical Validation & Fixed Evaluation Corruption Bank
 
 * **Thesis Placement:** Chapter 5, Subchapter 5.1 & 5.2.
 * **Objective:** Eliminate single-seed fragility. Demonstrate that Model B’s resilience margins (+13.68 p.p. in blur, +3.32 p.p. in noise, +7.43 p.p. in perspective) hold consistently across independent stochastic initializations and batch orderings.
 * **Seeds:** `[42, 123, 456]`. (Seed 123 is already completed: `EXP-001_baseline` and `EXP-002_robust`).
+* **Crucial Architectural Invariant — Training vs. Evaluation Dynamics:**
+  - **Training Phase (Dynamic On-The-Fly Augmentation):** Model B training uses **100% dynamic, on-the-fly random transformations per epoch**. Every epoch samples fresh, stochastic perturbation parameters ($p$, $\sigma$, $s$). The training set is **never** pre-degraded or homogenized; this continuous variation prevents memorization and provides the implicit regularization that kept Model B from overfitting across all 25 epochs.
+  - **Evaluation Phase (Deterministic Corruption Bank):** In contrast to training, test-set benchmark evaluation on the frozen 116,323 samples must use **frozen, identical corrupted pixels** for all models and seeds. This eliminates evaluation-time variance, ensuring that observed metric deltas reflect true model robustness rather than random differences in test noise realizations.
 * **Training Protocol:**
   - Optimizer: AdamW ($\text{lr} = 10^{-3}$, $\beta_1 = 0.9, \beta_2 = 0.999$, weight decay $= 10^{-4}$).
   - Scheduler: ReduceLROnPlateau (factor $= 0.5$, patience $= 2$, min lr $= 10^{-5}$).
@@ -178,16 +181,20 @@ flowchart TD
 
 ---
 
-### Phase 4: Compounded Factory-Floor Multi-Hazard Benchmark
+### Phase 4: Compounded Factory-Floor Multi-Hazard & Directional Motion Blur (OOD) Benchmark
 
 * **Thesis Placement:** Chapter 5, Subchapter 5.4 (*Odporność na degradacje złożone w warunkach symulacji przemysłowej*).
-* **Objective:** Test the hypothesis that models trained under isolated synthetic perturbations maintain resilience when subjected to compounded, simultaneous distortions encountered on physical production lines (e.g. dirty optics + sensor noise + angled conveyor belt).
-* **Zero Retraining Constraint:** This evaluation tests generalizability without training on compounded distributions.
-* **Hazard Tiers:**
+* **Objective:** Test two critical industrial robustness hypotheses:
+  1. *Compounded Stress Hypothesis:* Do models trained on isolated synthetic perturbations maintain resilience when subjected to simultaneous, compounded factory-floor distortions?
+  2. *Out-of-Distribution (OOD) Transfer Hypothesis:* Does training on *isotropic* (radially symmetric) Gaussian blur confer general robustness against unseen *anisotropic* (directional) motion blur caused by industrial conveyor belt displacement?
+* **Zero Retraining Constraint:** Both benchmarks evaluate existing frozen checkpoints without training on either compounded noise or motion blur.
+
+#### 4.1 Compounded Factory-Floor Multi-Hazard Tiers
+* **Hazard Tiers (Applied to Untouched Test Split):**
   - **Tier 1 (Mild Industrial):** Gaussian Blur $\sigma = 0.8$ + Additive Noise $\sigma_n = 0.04$ + Perspective Skew $p = 0.08$.
   - **Tier 2 (Moderate Industrial):** Gaussian Blur $\sigma = 1.5$ + Additive Noise $\sigma_n = 0.08$ + Perspective Skew $p = 0.15$.
   - **Tier 3 (Harsh Industrial):** Gaussian Blur $\sigma = 2.2$ + Additive Noise $\sigma_n = 0.14$ + Perspective Skew $p = 0.22$.
-* **Analysis:** Measure whether accuracy loss is sub-additive, linear, or super-linear (catastrophic breakdown).
+* **Analysis:** Measure whether compound error degradation matches linear additive models or exhibits super-linear catastrophic failure.
 * **Deliverable Schema (`experiments/outputs/tables/compounded_stress.json`):**
   ```json
   {
@@ -200,6 +207,22 @@ flowchart TD
     "tier_3_harsh": {
       "model_a_acc": 22.10, "model_b_acc": 49.30, "delta_pp": 27.20
     }
+  }
+  ```
+
+#### 4.2 Directional Motion Blur Out-of-Distribution (OOD) Stress Test
+* **Physical Origin:** Linear displacement of alphanumeric markings on high-speed industrial conveyor sorting lines during finite camera exposure times ($s = v \cdot \Delta t$).
+* **Mathematical Formulation (1D Horizontal Kernel):**
+  $$K(x, y) = \begin{cases} \frac{1}{L} & \text{if } y = 0 \text{ and } |x| \le \lfloor L/2 \rfloor \\ 0 & \text{otherwise} \end{cases}$$
+* **Sweep Levels:** Kernel length $L \in [3, 5, 7, 9, 11]\text{ pixels}$ at horizontal trajectory ($\theta = 0^\circ$).
+* **Scientific Insight:** Evaluates whether Model B's learned representations possess true topological invariance (e.g. recognizing vertical character strokes smeared horizontally) or merely an over-fitted tolerance to symmetric Gaussian blurring.
+* **Deliverable Schema (`experiments/outputs/tables/motion_blur_ood.json`):**
+  ```json
+  {
+    "kernel_lengths": [3, 5, 7, 9, 11],
+    "model_a_acc": [76.50, 62.10, 44.80, 28.30, 16.20],
+    "model_b_acc": [81.20, 74.30, 61.50, 48.10, 32.40],
+    "delta_pp": [4.70, 12.20, 16.70, 19.80, 16.20]
   }
   ```
 
@@ -233,7 +256,7 @@ flowchart TD
 | **Phase 1: Sweeps** | `degradation_sweep.py` across 6 checkpoints | GPU / Multi-core CPU | ~2.5 hrs | Ready to run |
 | **Phase 2: Grad-CAM** | `generate_gradcam.py` | Local CPU / GPU | ~10 mins | Script needed |
 | **Phase 3: Edge Opt** | `benchmark_edge_optimization.py` | Local CPU | ~30 mins | Script needed |
-| **Phase 4: Multi-Hazard**| `evaluate_compounded_stress.py` | GPU / Local CPU | ~20 mins | Script needed |
+| **Phase 4: Multi-Hazard & Motion Blur**| `evaluate_compounded_stress.py`, `evaluate_motion_blur_ood.py` | GPU / Local CPU | ~25 mins | Script needed |
 | **Phase 5: Error Post-Mortem**| `export_error_diagnostics.py` | Local CPU | ~15 mins | Script needed |
 | **TOTAL** | Complete Execution Package | **~8.5 hrs GPU + 1.5 hrs CPU** | **< 2 Working Days** | High Feasibility |
 
@@ -264,10 +287,10 @@ flowchart TD
     ├── Profile CPU latency (B=1, B=32) with 1,000 iterations.
     └── Export experiments/outputs/tables/edge_practicality.json.
 
-[ ] Step 5: Compounded Multi-Hazard Evaluation Script
-    ├── Create experiments/scripts/evaluate_compounded_stress.py.
-    ├── Implement Tier 1, Tier 2, and Tier 3 compound degradations.
-    └── Export experiments/outputs/tables/compounded_stress.json.
+[ ] Step 5: Compounded Multi-Hazard & Motion Blur OOD Evaluation Scripts
+    ├── Create experiments/scripts/evaluate_compounded_stress.py (Tiers 1, 2, 3).
+    ├── Create experiments/scripts/evaluate_motion_blur_ood.py (1D horizontal kernel sweep L in [3..11]).
+    └── Export experiments/outputs/tables/compounded_stress.json and motion_blur_ood.json.
 
 [ ] Step 6: Error Stratification & Homoglyph Post-Mortem
     ├── Create experiments/scripts/export_error_diagnostics.py.
