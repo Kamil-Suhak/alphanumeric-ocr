@@ -3,11 +3,10 @@ from pathlib import Path
 import zipfile
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = PROJECT_ROOT.parent
 
-# Ścieżka wyjściowego archiwum ZIP
 OUTPUT_ZIP = PROJECT_ROOT / "alphanumeric_ocr_bundle.zip"
 
-# Katalogi i wzorce wykluczone z archiwum
 EXCLUDED_DIRS = {
     ".venv",
     "venv",
@@ -18,7 +17,6 @@ EXCLUDED_DIRS = {
     ".idea",
     ".vscode",
     "raw",
-    "manifests",
 }
 
 EXCLUDED_EXTENSIONS = {
@@ -29,17 +27,21 @@ EXCLUDED_EXTENSIONS = {
     ".gz",
 }
 
+
 def should_exclude(path: Path) -> bool:
     for part in path.parts:
         if part in EXCLUDED_DIRS:
             return True
     if path.suffix in EXCLUDED_EXTENSIONS:
         return True
-    # Dopuszczenie wag modeli wyłącznie dla checkpointów best.pt w results/runs/
+    # Zachowanie wyłącznie wag best.pt w experiments/outputs/runs/
     if path.suffix in {".pt", ".pth"}:
-        if not ("results" in path.parts and "runs" in path.parts and path.name == "best.pt"):
+        if not ("outputs" in path.parts and "runs" in path.parts and path.name == "best.pt"):
             return True
+    if path.suffix == ".onnx":
+        return True
     return False
+
 
 def main() -> None:
     print(f"Tworzenie archiwum projektu: {OUTPUT_ZIP.name}...")
@@ -48,12 +50,12 @@ def main() -> None:
     with zipfile.ZipFile(OUTPUT_ZIP, "w", zipfile.ZIP_DEFLATED) as zip_file:
         for root, dirs, files in os.walk(PROJECT_ROOT):
             root_path = Path(root)
-
-            # Pomijanie całych wykluczonych katalogów na wczesnym etapie
             dirs[:] = [d for d in dirs if d not in EXCLUDED_DIRS]
 
             for file_name in files:
                 file_path = root_path / file_name
+                if file_path == OUTPUT_ZIP:
+                    continue
                 rel_path = file_path.relative_to(PROJECT_ROOT)
 
                 if should_exclude(rel_path):
@@ -65,6 +67,7 @@ def main() -> None:
     size_mb = OUTPUT_ZIP.stat().st_size / (1024 * 1024)
     print(f"Pomyślnie spakowano {included_count} plików do: {OUTPUT_ZIP.resolve()}")
     print(f"Rozmiar archiwum: {size_mb:.2f} MB")
+
 
 if __name__ == "__main__":
     main()

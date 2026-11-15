@@ -1,5 +1,5 @@
 experiment:
-  name: EXP-001
+  name: EXP-001_baseline
   description: "Czysty model bazowy uczony na zbiorze EMNIST ByClass"
 
 seed: 123

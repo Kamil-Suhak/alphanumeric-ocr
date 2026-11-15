@@ -1,5 +1,5 @@
 experiment:
-  name: EXP-002
+  name: EXP-002_robust
   description: "Model odporny (Robust CNN) uczony na EMNIST ByClass z degradacjami"
 
 seed: 123

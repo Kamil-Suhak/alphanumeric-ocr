@@ -10,6 +10,7 @@ This guide describes the day-to-day workflow for writing your engineering thesis
 - **Typst CLI:** `0.15.1` (installed via Winget)
 - **VS Code Extension:** `Tinymist Typst` (`myriad-dreamin.tinymist`)
 - **Python Package Manager:** `uv` `0.13.6` (installed via Winget)
+- **Python Runtime:** `3.14` (pinned in `.python-version` and `pyproject.toml`)
 
 ### VS Code Live Preview
 1. Open the repository root in VS Code.
@@ -92,8 +93,8 @@ uv run python experiments/scripts/benchmark_practicality.py
 
 ### Experiment Output Routing
 Output files are organized strictly by purpose:
-- `experiments/outputs/runs/EXP-001_baseline/`: Checkpoint `best.pt`, training curves, confusion matrix.
-- `experiments/outputs/runs/EXP-002_robust/`: Checkpoint `best.pt`, training curves, confusion matrix.
+- `experiments/outputs/runs/EXP-001_baseline_seed123/`: Checkpoint `best.pt`, training curves, confusion matrix.
+- `experiments/outputs/runs/EXP-002_robust_seed123/`: Checkpoint `best.pt`, training curves, confusion matrix.
 - `experiments/outputs/sweeps/`: Subfolders for `blur/`, `noise/`, `perspective/` containing CSVs and PNGs.
 - `experiments/outputs/tables/`: Aggregated summary files (`accuracy_summary.json`, `practicality.json`).
 

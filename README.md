@@ -34,7 +34,7 @@ Niniejsze repozytorium integruje w strukturze monorepozytorium:
 │   ├── src/                # Kod źródłowy (architektura, transformacje, trening, metryki)
 │   ├── scripts/            # Skrypty wykonawcze (trening, ewaluacja, profilowanie)
 │   └── outputs/            # Wyniki uporządkowane semantycznie i numerowane
-│       ├── runs/           # Modele i krzywe (EXP-001_baseline, EXP-002_robust)
+│       ├── runs/           # Modele i krzywe (EXP-001_baseline_seed123, EXP-002_robust_seed123)
 │       ├── sweeps/         # Krzywe i dane odporności (blur, noise, perspective)
 │       ├── diagnostics/    # Wizualizacje próbek i weryfikacja orientacji
 │       └── tables/         # Zestawienia metryk w formacie JSON/CSV
@@ -63,9 +63,9 @@ Niniejsze repozytorium integruje w strukturze monorepozytorium:
    typst compile --root . document/main.typ "Praca_Inzynierska_Kamil_Suhak.pdf"
    ```
 
-### Środowisko Python (zarządzane przez `uv`)
+### Środowisko Python 3.14 (zarządzane przez `uv`)
 ```bash
-# Synchronizacja środowiska
+# Synchronizacja środowiska (Python 3.14)
 uv sync
 
 # Przykładowe uruchomienie ewaluacji

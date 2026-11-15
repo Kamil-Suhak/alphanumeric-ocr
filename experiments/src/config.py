@@ -25,3 +25,16 @@ FIGURES_DIR = DIAGNOSTICS_DIR
 # Parametry normalizacji wyznaczone eksperymentalnie na 90% zbioru treningowego ByClass po dopełnieniu zerami (scripts/compute_normalization.py)
 EMNIST_MEAN = 0.1331
 EMNIST_STD = 0.2870
+
+
+def resolve_checkpoint_path(run_name_or_path: str | Path) -> Path:
+    """Wyznaczenie ścieżki do pliku wag best.pt na podstawie nazwy eksperymentu lub ścieżki."""
+    candidate = Path(run_name_or_path)
+    if candidate.is_file():
+        return candidate
+    if (candidate / "best.pt").is_file():
+        return candidate / "best.pt"
+    run_ckpt = RUNS_DIR / str(run_name_or_path) / "best.pt"
+    if run_ckpt.is_file():
+        return run_ckpt
+    raise FileNotFoundError(f"Checkpoint not found for run '{run_name_or_path}': expected {run_ckpt}")

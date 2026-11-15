@@ -35,7 +35,7 @@ This document establishes the binding architectural constraints, operational inv
    - Training and validation splits are permanently locked in `experiments/manifests/train_indices.csv` and `val_indices.csv`.
 
 6. **Experiment Output Organization & Diligent Naming:**
-   - Every experiment run must be placed in a dedicated, numbered, or semantically named folder under `experiments/outputs/runs/` (e.g., `EXP-001_baseline/`, `EXP-002_robust/`).
+   - Every experiment run must be placed in a dedicated, numbered, or semantically named folder under `experiments/outputs/runs/` (e.g., `EXP-001_baseline_seed123/`, `EXP-002_robust_seed123/`).
    - Never save loose figures directly to `experiments/outputs/`. Route figures to their specific subdirectories:
      - `experiments/outputs/runs/<RUN_ID>/` for run-specific curves and confusion matrices.
      - `experiments/outputs/sweeps/<degradation>/` for comparative sweep curves and CSV data.
@@ -75,7 +75,7 @@ alphanumeric-ocr/
 │   ├── src/              # Core library (models, transforms, training, evaluation)
 │   ├── scripts/          # CLI driver scripts
 │   └── outputs/          # Strictly organized and numbered experiment artifacts
-│       ├── runs/         # Per-experiment directories (EXP-001_baseline, EXP-002_robust)
+│       ├── runs/         # Per-experiment directories (EXP-001_baseline_seed123, EXP-002_robust_seed123)
 │       ├── sweeps/       # Degradation sweeps (blur, noise, perspective)
 │       ├── diagnostics/  # Data checks and sample grids
 │       └── tables/       # JSON and CSV tables consumed by Typst
@@ -92,7 +92,7 @@ alphanumeric-ocr/
 
 ## 3. Toolchain & Execution Commands
 
-- **Python Management:** Always use `uv` for python dependencies and script execution:
+- **Python Management:** Use **Python 3.14** and `uv` for all dependencies and script execution:
   - Add dependency: `uv add <package>`
   - Run script: `uv run python experiments/scripts/<script>.py`
 - **Typst Compilation:**

@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 import sys
 import torch
@@ -6,73 +7,98 @@ from torchvision.datasets import EMNIST
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
-from src.config import RAW_EMNIST_DIR, RESULTS_DIR
-from src.data.emnist import CLASS_NAMES
-from src.data.transforms import BLUR_SEVERITY_LEVELS, NOISE_SEVERITY_LEVELS, PERSPECTIVE_SEVERITY_LEVELS
-from src.models.cnn import AlphanumericCNN
-from src.utils.checkpoint import load_checkpoint
+from src.config import RAW_EMNIST_DIR, SWEEPS_DIR
+from src.data.transforms import (
+    BLUR_SEVERITY_LEVELS,
+    NOISE_SEVERITY_LEVELS,
+    PERSPECTIVE_SEVERITY_LEVELS,
+)
 from src.experiments.degradation_sweep import (
-    run_single_sweep,
     plot_robustness_curve,
+    run_single_sweep,
+    save_single_run_sweep_csv,
     save_sweep_csv,
 )
+from src.training.runner import load_eval_model
+
+SWEEP_DEFINITIONS = [
+    ("blur", BLUR_SEVERITY_LEVELS, "Rozmycie gaussowskie ($\\sigma$)", "Odporność na rozmycie gaussowskie"),
+    ("noise", NOISE_SEVERITY_LEVELS, "Szum gaussowski ($\\sigma$)", "Odporność na szum gaussowski"),
+    (
+        "perspective",
+        PERSPECTIVE_SEVERITY_LEVELS,
+        "Zniekształcenie perspektywiczne",
+        "Odporność na zniekształcenia perspektywiczne",
+    ),
+]
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="EXP-006: Deterministic degradation sweep evaluator.")
+    parser.add_argument(
+        "--runs",
+        nargs="+",
+        default=None,
+        help="List of run folder names under experiments/outputs/runs/ to evaluate.",
+    )
+    parser.add_argument(
+        "--clean-run",
+        type=str,
+        default="EXP-001_baseline_seed123",
+        help="Baseline run name for pairwise comparison plots.",
+    )
+    parser.add_argument(
+        "--robust-run",
+        type=str,
+        default="EXP-002_robust_seed123",
+        help="Robust run name for pairwise comparison plots.",
+    )
+    parser.add_argument("--eval-seed", type=int, default=123, help="Sample-indexed seed for test corruptions.")
+    parser.add_argument("--batch-size", type=int, default=512)
+    return parser.parse_args()
+
 
 def main() -> None:
+    args = parse_args()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Ewaluacja porównawcza odporności modeli na urządzeniu: {device}")
+    print(f"Ewaluacja odporności modeli na urządzeniu: {device} (eval_seed={args.eval_seed})")
 
-    runs_dir = RESULTS_DIR / "runs"
-    clean_ckpt_path = runs_dir / "EXP-001" / "best.pt"
-    robust_ckpt_path = runs_dir / "EXP-002" / "best.pt"
-
-    if not clean_ckpt_path.exists():
-        print(f"[BŁĄD] Brak punktu kontrolnego Modelu A (Czystego): {clean_ckpt_path}")
-        print("Należy najpierw uruchomić skrypt: python scripts/train_baseline.py")
-        return
-
-    if not robust_ckpt_path.exists():
-        print(f"[BŁĄD] Brak punktu kontrolnego Modelu B (Odpornego): {robust_ckpt_path}")
-        print("Należy najpierw uruchomić skrypt: python scripts/train_robust.py")
-        return
-
-    # Inicjalizacja modeli
-    clean_model = AlphanumericCNN(num_classes=len(CLASS_NAMES)).to(device)
-    load_checkpoint(clean_ckpt_path, clean_model, device=device)
-    clean_model.eval()
-
-    robust_model = AlphanumericCNN(num_classes=len(CLASS_NAMES)).to(device)
-    load_checkpoint(robust_ckpt_path, robust_model, device=device)
-    robust_model.eval()
-
-    # Wczytanie surowego zbioru testowego EMNIST
     raw_test = EMNIST(root=str(RAW_EMNIST_DIR), split="byclass", train=False, download=False, transform=None)
-    print(f"Wczytano {len(raw_test):,} surowych próbek zbioru testowego.")
+    print(f"Wczytano {len(raw_test):,} próbek zbioru testowego.")
 
-    robustness_out_dir = RESULTS_DIR / "robustness"
-    robustness_out_dir.mkdir(parents=True, exist_ok=True)
+    target_runs = args.runs if args.runs is not None else [args.clean_run, args.robust_run]
+    all_results = {}
 
-    sweeps = [
-        ("blur", BLUR_SEVERITY_LEVELS, "Rozmycie gaussowskie ($\\sigma$)", "Odporność na rozmycie gaussowskie"),
-        ("noise", NOISE_SEVERITY_LEVELS, "Szum gaussowski ($\\sigma$)", "Odporność na szum gaussowski"),
-        ("perspective", PERSPECTIVE_SEVERITY_LEVELS, "Zniekształcenie perspektywiczne (%)", "Odporność na zniekształcenia perspektywiczne"),
-    ]
+    for run_name in target_runs:
+        print(f"\n=== Ewaluacja modelu: {run_name} ===")
+        model = load_eval_model(run_name, device=device)
+        all_results[run_name] = {}
 
-    for deg_type, levels, xlabel, title in sweeps:
-        print(f"\n--- Rozpoczęcie testu: {deg_type.upper()} ---")
-        print("Ewaluacja Modelu A (Czystego)...")
-        clean_res = run_single_sweep(clean_model, raw_test, deg_type, levels, device, batch_size=512)
+        for deg_type, levels, _, _ in SWEEP_DEFINITIONS:
+            print(f"--- Sweep: {deg_type} ---")
+            res = run_single_sweep(
+                model,
+                raw_test,
+                deg_type,
+                levels,
+                device=device,
+                batch_size=args.batch_size,
+                eval_seed=args.eval_seed,
+            )
+            all_results[run_name][deg_type] = res
+            per_run_csv = SWEEPS_DIR / "by_run" / run_name / f"{deg_type}.csv"
+            save_single_run_sweep_csv(res, per_run_csv)
 
-        print("Ewaluacja Modelu B (Odpornego)...")
-        robust_res = run_single_sweep(robust_model, raw_test, deg_type, levels, device, batch_size=512)
+    if args.runs is None:
+        for deg_type, _, xlabel, title in SWEEP_DEFINITIONS:
+            clean_res = all_results[args.clean_run][deg_type]
+            robust_res = all_results[args.robust_run][deg_type]
+            out_subdir = SWEEPS_DIR / deg_type
+            save_sweep_csv(clean_res, robust_res, out_subdir / f"{deg_type}.csv")
+            plot_robustness_curve(clean_res, robust_res, xlabel, title, out_subdir / f"{deg_type}_curve.png")
 
-        csv_path = robustness_out_dir / f"{deg_type}.csv"
-        save_sweep_csv(clean_res, robust_res, csv_path)
+    print("\nTesty odporności zakończone pomyślnie.")
 
-        plot_path = robustness_out_dir / f"{deg_type}_curve.png"
-        plot_robustness_curve(clean_res, robust_res, xlabel, title, plot_path)
-        print(f"Zapisano wykres i tabelę: {plot_path.name}, {csv_path.name}")
-
-    print("\nKompletne testy odporności zakończone pomyślnie.")
 
 if __name__ == "__main__":
     main()
