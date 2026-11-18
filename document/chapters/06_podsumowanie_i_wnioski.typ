@@ -28,7 +28,7 @@
 #lorem(140)
 
 == Możliwe kierunki dalszych badań
-// [Wskazówki autorskie]: Wskazać uzasadnione technicznie i merytorycznie kierunki kontynuacji prac: integrację odpornego ekstraktora cech AlphanumericCNN z lekkim dekoderem sekwencyjnym (np. CRNN/CTC lub modułem post-processingu n-gramowego) w celu eliminacji niejednoznaczności homoglificznych dzięki kontekstowi słowa, kwantyzację post-treningową INT8 i wdrożenie produkcyjne za pośrednictwem środowiska ONNX Runtime na mikrokontrolerach ARM, a także rozszerzenie symulatora o kierunkowe rozmycie ruchowe (ang. motion blur) oraz niejednorodne gradienty oświetlenia.
+// [Wskazówki autorskie]: Wskazać uzasadnione technicznie i merytorycznie kierunki kontynuacji prac: integrację odpornego ekstraktora cech AlphanumericCNN z lekkim dekoderem sekwencyjnym (np. CRNN/CTC lub modułem post-processingu n-gramowego) w celu eliminacji niejednoznaczności homoglificznych dzięki kontekstowi słowa, wdrożenie i pomiar skwantowanego modelu na fizycznych urządzeniach wbudowanych (np. ARM Cortex-M lub Jetson/Raspberry Pi), a także rozszerzenie badań o wielokierunkowe rozmycie ruchowe, niejednorodne gradienty oświetlenia oraz zbiory fotografii rzeczywistych z kamer przemysłowych i smartfonów.
 // Rekomendowana literatura: @chen2021text, @trivedi2026improving
 #lorem(140)
 

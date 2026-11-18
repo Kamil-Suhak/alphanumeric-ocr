@@ -69,21 +69,35 @@
 #lorem(130)
 
 == Analiza wyników dla wielu uruchomień
-// [Wskazówki autorskie – Miejsce na eksperyment Etapu 2]: Przedstawić powtarzalność statystyczną procesu uczenia i charakterystyk odpornościowych dla kilku niezależnych ziaren losowości (wartości średnie +/- odchylenie standardowe dokładności bazowej i kluczowych punktów degradacji), odpowiadając wprost na Pytanie Badawcze 4 (odporność na dobór ziarna, ang. seed-agnosticism). (Uwaga: W przypadku rezygnacji z powtórzeń w Etapie 2, podrozdział należy usunąć, a Pytanie 4 wykreślić z Rozdziału 1).
+// [Wskazówki autorskie]: Przedstawić powtarzalność statystyczną procesu uczenia i charakterystyk odpornościowych dla trzech niezależnych ziaren losowości (123, 456, 789) z pliku multi_seed_summary.json (wartości średnie +/- odchylenie standardowe dokładności bazowej i kluczowych punktów degradacji), odpowiadając wprost na Pytanie Badawcze 4 (odporność na dobór ziarna, ang. seed-agnosticism).
 // Rekomendowana literatura: @hendrycks2019benchmarking
 #lorem(140)
 
 #lorem(140)
 
-== Ocena modeli na obrazach rzeczywistych
-// [Wskazówki autorskie – Miejsce na eksperyment Etapu 2]: Dokonać ewaluacji transferu zerostopniowego (ang. zero-shot domain transfer) Modelu A i Modelu B na zewnętrznych wycinkach znaków rzeczywistych (zdjęcia wykonane smartfonem w zróżnicowanym oświetleniu i ujęciu kątowym lub zbiór Chars74k), aby sprawdzić, w jakim stopniu syntetyczna augmentacja degradacyjna poprawia generalizację na fizyczne zdjęcia z aparatów. (Uwaga: Dostosować treść w zależności od tego, które eksperymenty transferu z Etapu 2 przyniosą najbardziej wartościowe wnioski).
-// Rekomendowana literatura: @campos2009chars74k, @chen2021text
+== Analiza ablacyjna pojedynczych czynników augmentacji
+// [Wskazówki autorskie]: Zestawić macierz transferu odporności z pliku ablation_cross_matrix.json dla wariantów uczonych na pojedynczym typie zakłóceń (EXP-003: tylko rozmycie, EXP-004: tylko szum, EXP-005: tylko perspektywa) w porównaniu z Modelem A i Modelem B. Zidentyfikować asymetrie transferu międzymodalnościowego oraz ocenić, czy augmentacja łączona (Model B) wiąże się z kosztem lub synergią względem modeli wyspecjalizowanych.
+// Rekomendowana literatura: @hendrycks2019benchmarking, @vasiljevic2016examining
 #lorem(140)
 
 #lorem(140)
 
-== Analiza wydajności obliczeniowej i profilowanie sprzętowe
-// [Wskazówki autorskie]: Zaprezentować wyniki profilowania sprzętowego z pliku practicality.json: 634 110 parametrów, rozmiar wag FP32 wynoszący 2,42 MB (pełny checkpoint 7,28 MB), opóźnienie inferencji na CPU na poziomie 1,08 ms/znak dla partii 1 (przepustowość 2122,6 znaków/s dla partii 32) oraz opóźnienie na GPU równe 0,59 ms/znak dla partii 1 (46 171,9 znaków/s dla partii 32). Przedyskutować praktyczną przydatność sieci do wdrożeń brzegowych i systemów wbudowanych Przemysłu 4.0 czasu rzeczywistego bez konieczności stosowania akceleratorów chmurowych.
+== Złożone degradacje i rozmycie ruchowe poza dziedziną
+// [Wskazówki autorskie]: Przedstawić wyniki jednoczesnych zakłóceń Perspective -> Blur -> Noise dla trzech progów intensywności (compounded_stress.json: tier_1_mild, tier_2_moderate, tier_3_harsh) oraz krzywą generalizacji poza dziedzinę dla poziomego rozmycia ruchowego (motion_blur_ood.json i motion_blur_curve.png dla długości jądra L in {3, 5, 7, 9, 11}). Ocenić, na ile uodpornienie na izotropowe rozmycie Gaussa przenosi się na kierunkowe rozmycie ruchowe.
+// Rekomendowana literatura: @hendrycks2019benchmarking, @vasiljevic2016examining
+#lorem(140)
+
+#lorem(140)
+
+== Wyjaśnialność wizualna i stratyfikacja błędów
+// [Wskazówki autorskie]: Przeanalizować mapy atencji Grad-CAM z warstwy features[8] (gradcam_comparison.png, EXP-007) zestawiając skupienie filtrów Modelu A i Modelu B na czystych oraz zdegradowanych znakach. Następnie omówić czterokwadrantową stratyfikację próbek testowych (error_stratification.csv, error_quadrants.png, EXP-010) oraz strukturę błędów w podziale na 15 par homoglificznych i grupy wizualnie zbliżone z pliku homoglyph_breakdown.json.
+// Rekomendowana literatura: @selvaraju2017gradcam, @cohen2017emnist
+#lorem(140)
+
+#lorem(140)
+
+== Analiza wydajności obliczeniowej i optymalizacja brzegowa
+// [Wskazówki autorskie]: Zaprezentować wyniki profilowania PyTorch FP32 z pliku practicality.json (634 110 parametrów, rozmiar wag FP32 2,42 MB, opóźnienie CPU 1,08 ms dla partii 1 / 2122,6 znaków/s dla partii 32 oraz GPU 0,59 ms / 46 171,9 znaków/s) oraz rezultaty eksportu ONNX FP32 i statycznej kwantyzacji QDQ INT8 w ONNX Runtime z pliku edge_practicality.json (EXP-008: redukcja rozmiaru, przyspieszenie CPU oraz retencja dokładności na obrazach czystych i zdegradowanych). Przedyskutować przydatność sieci do systemów Przemysłu 4.0 czasu rzeczywistego.
 // Rekomendowana literatura: @paszke2019pytorch, @du2013automatic
 #lorem(130)
 

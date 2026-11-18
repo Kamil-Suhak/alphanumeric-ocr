@@ -55,20 +55,25 @@
 
 #lorem(130)
 
+=== Złożone scenariusze zakłóceń i rozmycie ruchowe (OOD)
+// [Wskazówki autorskie]: Zdefiniować dwa dodatkowe protokoły testowe uruchamiane wyłącznie na zamrożonych checkpointach (EXP-009): (1) jednoczesną sekwencję degradacji Perspective -> Blur -> Noise na trzech poziomach intensywności (tier_1_mild: p=0,08, sigma=0,8, s=0,04; tier_2_moderate: p=0,15, sigma=1,5, s=0,08; tier_3_harsh: p=0,22, sigma=2,2, s=0,14) oraz (2) kierunkowe poziome rozmycie ruchowe (angle=0,0 deg) o długości jądra L in {3, 5, 7, 9, 11} pikseli, niewystępujące w procesie uczenia (test OOD).
+// Rekomendowana literatura: @hendrycks2019benchmarking, @vasiljevic2016examining
+#lorem(130)
+
 == Strategie uczenia modeli
-// [Wskazówki autorskie]: Zdefiniować kontrolowany eksperyment porównawczy dwóch modeli o identycznej strukturze AlphanumericCNN, ziarnie losowości i hiperparametrach optymalizatora (AdamW, lr = 1e-3, weight_decay = 1e-4, rozmiar partii = 512, 25 epok), różniących się wyłącznie dystrybucją danych podawanych na wejście w trakcie uczenia.
+// [Wskazówki autorskie]: Zdefiniować kontrolowany eksperyment porównawczy wariantów o identycznej strukturze AlphanumericCNN i hiperparametrach optymalizatora (AdamW, lr = 1e-3, weight_decay = 1e-4, rozmiar partii = 512, 25 epok), powtarzany dla trzech niezależnych ziaren losowości (123, 456, 789) w modelach głównych oraz rozszerzony o badanie ablacyjne pojedynczych czynników (EXP-003–EXP-005).
 // Rekomendowana literatura: @loshchilov2017adamw, @shorten2019survey
 #lorem(120)
 
 === Model bazowy
-// [Wskazówki autorskie]: Opisać reżim uczenia Modelu A (EXP-001, Clean Baseline), trenowanego wyłącznie na wzorcowych, dopełnionych zerami próbkach EMNIST bez modyfikacji syntetycznych. Wskazać jego rolę jako punktu odniesienia wyznaczającego górną granicę dokładności na danych czystych oraz bazową podatność na przesunięcia rozkładu wejściowego.
+// [Wskazówki autorskie]: Opisać reżim uczenia Modelu A (EXP-001, Clean Baseline), trenowanego wyłącznie na wzorcowych, dopełnionych zerami próbkach EMNIST bez modyfikacji syntetycznych (dla ziaren 123, 456 i 789). Wskazać jego rolę jako punktu odniesienia wyznaczającego górną granicę dokładności na danych czystych oraz bazową podatność na przesunięcia rozkładu wejściowego.
 // Rekomendowana literatura: @cohen2017emnist
 #lorem(125)
 
 #lorem(125)
 
-=== Model uczony z uwzględnieniem degradacji
-// [Wskazówki autorskie]: Opisać potok stochastycznej augmentacji w locie dla Modelu B (EXP-002, Robust CNN), gdzie każdy obraz uczący podlega niezależnemu zniekształceniu perspektywicznemu ($p <= 0,25$), rozmyciu Gaussa ($sigma <= 2,0$) oraz szumowi matrycy ($s <= 0,15$), każde z prawdopodobieństwem 0,5. Wyjaśnić celowe ograniczenie $sigma <= 2,0$ w treningu, pozwalające zbadać generalizację poza dziedzinę uczącą (ang. out-of-distribution) dla $sigma in {2,5; 3,0}$.
+=== Model uczony z uwzględnieniem degradacji i warianty ablacyjne
+// [Wskazówki autorskie]: Opisać potok stochastycznej augmentacji w locie dla Modelu B (EXP-002, Robust CNN, ziarna 123, 456, 789), gdzie każdy obraz uczący podlega niezależnemu zniekształceniu perspektywicznemu ($p <= 0,25$), rozmyciu Gaussa ($sigma <= 2,0$) oraz szumowi matrycy ($s <= 0,15$), każde z prawdopodobieństwem 0,5. Wyjaśnić celowe ograniczenie $sigma <= 2,0$ w treningu (generalizacja OOD dla $sigma in {2,5; 3,0}$) oraz przedstawić trzy warianty ablacyjne (EXP-003: tylko rozmycie, EXP-004: tylko szum, EXP-005: tylko perspektywa) służące izolacji wpływu poszczególnych modalności i transferu między nimi.
 // Rekomendowana literatura: @shorten2019survey, @hendrycks2019benchmarking, @vasiljevic2016examining
 #lorem(135)
 
@@ -84,7 +89,7 @@
 #lorem(130)
 
 == Protokół eksperymentalny i reprodukowalność badań
-// [Wskazówki autorskie]: Zintegrować protokół prowadzenia eksperymentów i gwarancje powtarzalności: całkowitą izolację nienaruszonego zbioru testowego (116 323 próbek), utrwalone manifesty podziału 90/10 na zbiór uczący i walidacyjny (628 139 / 69 794 próbek), mechanizm zapisu checkpointu ściśle dla minimum straty walidacyjnej, determinizm generatorów pseudolosowych oraz procedurę pomiaru opóźnienia inferencji (faza rozgrzewki + 1000 iteracji pomiarowych dla partii 1 i 32).
+// [Wskazówki autorskie]: Zintegrować protokół prowadzenia eksperymentów i gwarancje powtarzalności: całkowitą izolację nienaruszonego zbioru testowego (116 323 próbek), utrwalone manifesty podziału 90/10 na zbiór uczący i walidacyjny (628 139 / 69 793 próbek), mechanizm zapisu checkpointu ściśle dla minimum straty walidacyjnej, deterministyczny generator ewaluacyjny indeksowany parą (eval_seed, sample_idx) gwarantujący identyczne zniekształcenia na poziomie pojedynczego piksela dla każdego modelu, protokół statycznej kwantyzacji QDQ INT8 w ONNX Runtime (kalibracja na 1 000 próbkach z val_indices.csv) oraz procedurę pomiaru opóźnienia inferencji (rozgrzewka + 1000 iteracji pomiarowych dla partii 1 i 32).
 // Rekomendowana literatura: @paszke2019pytorch, @cohen2017emnist
 #lorem(130)
 
