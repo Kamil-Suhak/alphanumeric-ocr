@@ -1,0 +1,7 @@
+{
+  "accuracy": 0.8787771979746052,
+  "macro_f1": 0.7566820029655894,
+  "macro_precision": 0.8194473829468794,
+  "macro_recall": 0.7551672722262865,
+  "case_insensitive_accuracy": 0.9121325963051159
+}

@@ -63,15 +63,15 @@ def main() -> None:
         ax.axis("off")
     axes[1, 6].axis("off")
 
-    # Wiersz 3: Zniekształcenie perspektywiczne (severity: 0% - 20%)
+    # Wiersz 3: Zniekształcenie perspektywiczne (severity: 0% - 25%)
     for col_idx, sev in enumerate(PERSPECTIVE_SEVERITY_LEVELS):
         ax = axes[2, col_idx]
         degraded = apply_perspective_distortion(sample_img, severity=sev, rng=rng)
         ax.imshow(degraded, cmap="gray", vmin=0.0, vmax=1.0)
         ax.set_title(f"Persp. {int(sev*100)}%", fontsize=9)
         ax.axis("off")
-    axes[2, 5].axis("off")
-    axes[2, 6].axis("off")
+    for col_idx in range(len(PERSPECTIVE_SEVERITY_LEVELS), 7):
+        axes[2, col_idx].axis("off")
 
     plt.suptitle(f"Przegląd syntetycznych degradacji dla znaku '{sample_char}'", fontsize=14)
     plt.tight_layout()

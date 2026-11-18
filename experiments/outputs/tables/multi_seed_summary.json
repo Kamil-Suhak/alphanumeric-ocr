@@ -1,0 +1,197 @@
+{
+  "seeds": [
+    123,
+    456,
+    789
+  ],
+  "clean": {
+    "model_a": {
+      "accuracy": {
+        "mean": 87.67,
+        "std": 0.09
+      },
+      "macro_f1": {
+        "mean": 76.05,
+        "std": 0.41
+      },
+      "case_insensitive_accuracy": {
+        "mean": 91.0,
+        "std": 0.06
+      }
+    },
+    "model_b": {
+      "accuracy": {
+        "mean": 87.55,
+        "std": 0.1
+      },
+      "macro_f1": {
+        "mean": 75.04,
+        "std": 0.57
+      },
+      "case_insensitive_accuracy": {
+        "mean": 90.95,
+        "std": 0.07
+      }
+    }
+  },
+  "sweeps": {
+    "blur": [
+      {
+        "severity": 0.0,
+        "model_a_acc_mean": 87.67,
+        "model_a_acc_std": 0.09,
+        "model_b_acc_mean": 87.55,
+        "model_b_acc_std": 0.1,
+        "delta_mean_pp": -0.12
+      },
+      {
+        "severity": 0.5,
+        "model_a_acc_mean": 85.67,
+        "model_a_acc_std": 0.09,
+        "model_b_acc_mean": 87.55,
+        "model_b_acc_std": 0.12,
+        "delta_mean_pp": 1.88
+      },
+      {
+        "severity": 1.0,
+        "model_a_acc_mean": 72.88,
+        "model_a_acc_std": 2.09,
+        "model_b_acc_mean": 87.32,
+        "model_b_acc_std": 0.08,
+        "delta_mean_pp": 14.44
+      },
+      {
+        "severity": 1.5,
+        "model_a_acc_mean": 38.14,
+        "model_a_acc_std": 10.06,
+        "model_b_acc_mean": 86.97,
+        "model_b_acc_std": 0.03,
+        "delta_mean_pp": 48.83
+      },
+      {
+        "severity": 2.0,
+        "model_a_acc_mean": 16.81,
+        "model_a_acc_std": 5.9,
+        "model_b_acc_mean": 86.2,
+        "model_b_acc_std": 0.1,
+        "delta_mean_pp": 69.38
+      },
+      {
+        "severity": 2.5,
+        "model_a_acc_mean": 9.58,
+        "model_a_acc_std": 3.53,
+        "model_b_acc_mean": 83.02,
+        "model_b_acc_std": 0.4,
+        "delta_mean_pp": 73.44
+      },
+      {
+        "severity": 3.0,
+        "model_a_acc_mean": 7.13,
+        "model_a_acc_std": 2.75,
+        "model_b_acc_mean": 62.47,
+        "model_b_acc_std": 2.88,
+        "delta_mean_pp": 55.34
+      }
+    ],
+    "noise": [
+      {
+        "severity": 0.0,
+        "model_a_acc_mean": 87.67,
+        "model_a_acc_std": 0.09,
+        "model_b_acc_mean": 87.55,
+        "model_b_acc_std": 0.1,
+        "delta_mean_pp": -0.12
+      },
+      {
+        "severity": 0.03,
+        "model_a_acc_mean": 87.48,
+        "model_a_acc_std": 0.1,
+        "model_b_acc_mean": 87.53,
+        "model_b_acc_std": 0.08,
+        "delta_mean_pp": 0.05
+      },
+      {
+        "severity": 0.06,
+        "model_a_acc_mean": 86.91,
+        "model_a_acc_std": 0.21,
+        "model_b_acc_mean": 87.45,
+        "model_b_acc_std": 0.07,
+        "delta_mean_pp": 0.54
+      },
+      {
+        "severity": 0.1,
+        "model_a_acc_mean": 84.24,
+        "model_a_acc_std": 1.13,
+        "model_b_acc_mean": 87.34,
+        "model_b_acc_std": 0.04,
+        "delta_mean_pp": 3.1
+      },
+      {
+        "severity": 0.15,
+        "model_a_acc_mean": 67.18,
+        "model_a_acc_std": 7.48,
+        "model_b_acc_mean": 87.06,
+        "model_b_acc_std": 0.01,
+        "delta_mean_pp": 19.88
+      },
+      {
+        "severity": 0.2,
+        "model_a_acc_mean": 30.57,
+        "model_a_acc_std": 6.29,
+        "model_b_acc_mean": 86.59,
+        "model_b_acc_std": 0.08,
+        "delta_mean_pp": 56.01
+      }
+    ],
+    "perspective": [
+      {
+        "severity": 0.0,
+        "model_a_acc_mean": 87.67,
+        "model_a_acc_std": 0.09,
+        "model_b_acc_mean": 87.55,
+        "model_b_acc_std": 0.1,
+        "delta_mean_pp": -0.12
+      },
+      {
+        "severity": 0.05,
+        "model_a_acc_mean": 85.46,
+        "model_a_acc_std": 0.06,
+        "model_b_acc_mean": 87.21,
+        "model_b_acc_std": 0.05,
+        "delta_mean_pp": 1.75
+      },
+      {
+        "severity": 0.1,
+        "model_a_acc_mean": 83.75,
+        "model_a_acc_std": 0.02,
+        "model_b_acc_mean": 86.64,
+        "model_b_acc_std": 0.05,
+        "delta_mean_pp": 2.88
+      },
+      {
+        "severity": 0.15,
+        "model_a_acc_mean": 80.36,
+        "model_a_acc_std": 0.01,
+        "model_b_acc_mean": 86.0,
+        "model_b_acc_std": 0.04,
+        "delta_mean_pp": 5.64
+      },
+      {
+        "severity": 0.2,
+        "model_a_acc_mean": 73.88,
+        "model_a_acc_std": 0.06,
+        "model_b_acc_mean": 85.01,
+        "model_b_acc_std": 0.09,
+        "delta_mean_pp": 11.13
+      },
+      {
+        "severity": 0.25,
+        "model_a_acc_mean": 64.25,
+        "model_a_acc_std": 0.2,
+        "model_b_acc_mean": 83.06,
+        "model_b_acc_std": 0.09,
+        "delta_mean_pp": 18.81
+      }
+    ]
+  }
+}

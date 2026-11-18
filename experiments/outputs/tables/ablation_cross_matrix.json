@@ -1,0 +1,154 @@
+{
+  "models": {
+    "EXP-001_baseline_seed123": {
+      "label": "Clean Baseline (A)",
+      "clean_accuracy": 87.62,
+      "clean_macro_f1": 75.59,
+      "clean_case_insensitive": 90.96,
+      "degradations": {
+        "blur": {
+          "mean_accuracy": 42.69,
+          "points": {
+            "1.0": 71.69,
+            "2.0": 12.24,
+            "3.0": 4.28
+          }
+        },
+        "noise": {
+          "mean_accuracy": 76.73,
+          "points": {
+            "0.15": 74.8,
+            "0.2": 37.83
+          }
+        },
+        "perspective": {
+          "mean_accuracy": 79.25,
+          "points": {
+            "0.15": 80.36,
+            "0.25": 64.33
+          }
+        }
+      }
+    },
+    "EXP-003_ablation_blur_seed123": {
+      "label": "Blur Only",
+      "clean_accuracy": 87.51,
+      "clean_macro_f1": 75.16,
+      "clean_case_insensitive": 90.9,
+      "degradations": {
+        "blur": {
+          "mean_accuracy": 84.24,
+          "points": {
+            "1.0": 87.35,
+            "2.0": 86.26,
+            "3.0": 70.35
+          }
+        },
+        "noise": {
+          "mean_accuracy": 65.74,
+          "points": {
+            "0.15": 44.95,
+            "0.2": 23.45
+          }
+        },
+        "perspective": {
+          "mean_accuracy": 80.08,
+          "points": {
+            "0.15": 81.17,
+            "0.25": 65.52
+          }
+        }
+      }
+    },
+    "EXP-004_ablation_noise_seed123": {
+      "label": "Noise Only",
+      "clean_accuracy": 87.64,
+      "clean_macro_f1": 76.46,
+      "clean_case_insensitive": 91.0,
+      "degradations": {
+        "blur": {
+          "mean_accuracy": 49.52,
+          "points": {
+            "1.0": 77.47,
+            "2.0": 19.78,
+            "3.0": 11.47
+          }
+        },
+        "noise": {
+          "mean_accuracy": 87.23,
+          "points": {
+            "0.15": 86.99,
+            "0.2": 86.35
+          }
+        },
+        "perspective": {
+          "mean_accuracy": 79.91,
+          "points": {
+            "0.15": 81.09,
+            "0.25": 65.83
+          }
+        }
+      }
+    },
+    "EXP-005_ablation_perspective_seed123": {
+      "label": "Perspective Only",
+      "clean_accuracy": 87.88,
+      "clean_macro_f1": 75.67,
+      "clean_case_insensitive": 91.21,
+      "degradations": {
+        "blur": {
+          "mean_accuracy": 44.63,
+          "points": {
+            "1.0": 74.97,
+            "2.0": 15.19,
+            "3.0": 4.09
+          }
+        },
+        "noise": {
+          "mean_accuracy": 58.92,
+          "points": {
+            "0.15": 21.59,
+            "0.2": 5.57
+          }
+        },
+        "perspective": {
+          "mean_accuracy": 86.6,
+          "points": {
+            "0.15": 86.75,
+            "0.25": 84.38
+          }
+        }
+      }
+    },
+    "EXP-002_robust_seed123": {
+      "label": "All Combined (B)",
+      "clean_accuracy": 87.46,
+      "clean_macro_f1": 74.58,
+      "clean_case_insensitive": 90.88,
+      "degradations": {
+        "blur": {
+          "mean_accuracy": 83.28,
+          "points": {
+            "1.0": 87.25,
+            "2.0": 86.2,
+            "3.0": 64.44
+          }
+        },
+        "noise": {
+          "mean_accuracy": 87.22,
+          "points": {
+            "0.15": 87.06,
+            "0.2": 86.66
+          }
+        },
+        "perspective": {
+          "mean_accuracy": 85.86,
+          "points": {
+            "0.15": 85.96,
+            "0.25": 83.01
+          }
+        }
+      }
+    }
+  }
+}

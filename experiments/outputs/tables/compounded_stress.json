@@ -1,0 +1,163 @@
+{
+  "eval_seed": 123,
+  "num_samples": 116323,
+  "tiers": {
+    "tier_1_mild": {
+      "perspective": 0.08,
+      "blur": 0.8,
+      "noise": 0.04
+    },
+    "tier_2_moderate": {
+      "perspective": 0.15,
+      "blur": 1.5,
+      "noise": 0.08
+    },
+    "tier_3_harsh": {
+      "perspective": 0.22,
+      "blur": 2.2,
+      "noise": 0.14
+    }
+  },
+  "runs": {
+    "EXP-001_baseline_seed123": {
+      "clean": {
+        "accuracy_pct": 87.62,
+        "macro_f1_pct": 75.59,
+        "case_insensitive_acc_pct": 90.96,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 73.96,
+        "macro_f1_pct": 55.05,
+        "case_insensitive_acc_pct": 80.51,
+        "retention_pct": 84.41
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 18.63,
+        "macro_f1_pct": 8.71,
+        "case_insensitive_acc_pct": 19.3,
+        "retention_pct": 21.26
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 5.64,
+        "macro_f1_pct": 0.69,
+        "case_insensitive_acc_pct": 5.64,
+        "retention_pct": 6.44
+      }
+    },
+    "EXP-002_robust_seed123": {
+      "clean": {
+        "accuracy_pct": 87.46,
+        "macro_f1_pct": 74.58,
+        "case_insensitive_acc_pct": 90.88,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 86.62,
+        "macro_f1_pct": 73.06,
+        "case_insensitive_acc_pct": 90.18,
+        "retention_pct": 99.04
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 84.1,
+        "macro_f1_pct": 69.17,
+        "case_insensitive_acc_pct": 87.6,
+        "retention_pct": 96.16
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 62.29,
+        "macro_f1_pct": 45.27,
+        "case_insensitive_acc_pct": 64.84,
+        "retention_pct": 71.23
+      }
+    },
+    "EXP-003_ablation_blur_seed123": {
+      "clean": {
+        "accuracy_pct": 87.51,
+        "macro_f1_pct": 75.16,
+        "case_insensitive_acc_pct": 90.9,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 83.05,
+        "macro_f1_pct": 69.67,
+        "case_insensitive_acc_pct": 86.5,
+        "retention_pct": 94.9
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 23.73,
+        "macro_f1_pct": 19.4,
+        "case_insensitive_acc_pct": 25.48,
+        "retention_pct": 27.12
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 1.03,
+        "macro_f1_pct": 0.48,
+        "case_insensitive_acc_pct": 1.41,
+        "retention_pct": 1.18
+      }
+    },
+    "EXP-004_ablation_noise_seed123": {
+      "clean": {
+        "accuracy_pct": 87.64,
+        "macro_f1_pct": 76.46,
+        "case_insensitive_acc_pct": 91.0,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 78.37,
+        "macro_f1_pct": 60.22,
+        "case_insensitive_acc_pct": 84.3,
+        "retention_pct": 89.42
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 46.31,
+        "macro_f1_pct": 27.5,
+        "case_insensitive_acc_pct": 50.05,
+        "retention_pct": 52.84
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 16.4,
+        "macro_f1_pct": 6.01,
+        "case_insensitive_acc_pct": 17.05,
+        "retention_pct": 18.71
+      }
+    },
+    "EXP-005_ablation_perspective_seed123": {
+      "clean": {
+        "accuracy_pct": 87.88,
+        "macro_f1_pct": 75.67,
+        "case_insensitive_acc_pct": 91.21,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 81.06,
+        "macro_f1_pct": 66.06,
+        "case_insensitive_acc_pct": 85.69,
+        "retention_pct": 92.25
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 16.34,
+        "macro_f1_pct": 10.73,
+        "case_insensitive_acc_pct": 17.43,
+        "retention_pct": 18.6
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 1.22,
+        "macro_f1_pct": 0.5,
+        "case_insensitive_acc_pct": 1.31,
+        "retention_pct": 1.39
+      }
+    }
+  },
+  "comparison": {
+    "baseline_run": "EXP-001_baseline_seed123",
+    "robust_run": "EXP-002_robust_seed123",
+    "accuracy_diff_pp": {
+      "clean": -0.16,
+      "tier_1_mild": 12.66,
+      "tier_2_moderate": 65.47,
+      "tier_3_harsh": 56.65
+    }
+  }
+}
