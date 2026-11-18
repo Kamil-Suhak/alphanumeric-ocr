@@ -16,11 +16,11 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
 from src.config import RAW_EMNIST_DIR, RUNS_DIR, TABLES_DIR, resolve_checkpoint_path
-from src.data.emnist import get_raw_emnist_datasets
+from src.data.emnist import CLASS_NAMES, get_raw_emnist_datasets
 from src.experiments.degradation_sweep import ControlledDegradationDataset, build_degradation_fn
 from src.training.evaluate import evaluate_model
 from src.training.runner import load_eval_model
-from src.utils.metrics import compute_metrics
+from src.utils.metrics import compute_case_insensitive_accuracy, compute_metrics
 
 EDGE_EVAL_CONDITIONS: List[Tuple[str, str, float]] = [
     ("clean", "clean", 0.0),
@@ -137,7 +137,9 @@ def evaluate_onnx_session(session: ort.InferenceSession, loader: DataLoader) -> 
 
     y_true = np.concatenate(y_true_parts)
     y_pred = np.concatenate(y_pred_parts)
-    return compute_metrics(y_true, y_pred)
+    metrics = compute_metrics(y_true, y_pred, num_classes=len(CLASS_NAMES))
+    metrics["case_insensitive_accuracy"] = compute_case_insensitive_accuracy(y_true, y_pred, CLASS_NAMES)
+    return metrics
 
 
 def run_edge_benchmark(
