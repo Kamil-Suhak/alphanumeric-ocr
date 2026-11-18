@@ -41,6 +41,11 @@ def resolve_augmentation_kwargs(aug_cfg: Dict[str, Any]) -> Optional[Dict[str, A
         else:
             probs[prob_key] = 0.5 if bool(aug_cfg.get(modality, False)) else 0.0
 
+    if "motion_blur_prob" in aug_cfg:
+        probs["motion_blur_prob"] = float(aug_cfg["motion_blur_prob"])
+    elif bool(aug_cfg.get("motion_blur", False)):
+        probs["motion_blur_prob"] = 0.5
+
     if not any(prob > 0.0 for prob in probs.values()):
         return None
 
@@ -48,6 +53,8 @@ def resolve_augmentation_kwargs(aug_cfg: Dict[str, Any]) -> Optional[Dict[str, A
     for limit_key in ("max_sigma", "max_noise_std", "max_perspective_severity"):
         if limit_key in aug_cfg:
             kwargs[limit_key] = float(aug_cfg[limit_key])
+    if "motion_blur_kernels" in aug_cfg:
+        kwargs["motion_blur_kernels"] = [int(k) for k in aug_cfg["motion_blur_kernels"]]
     return kwargs
 
 

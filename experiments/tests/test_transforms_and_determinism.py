@@ -6,6 +6,7 @@ import torch
 from src.data.transforms import (
     COMPOUND_STRESS_TIERS,
     MOTION_BLUR_KERNEL_SIZES,
+    DegradationPipeline,
     apply_compound_degradation,
     apply_motion_blur,
 )
@@ -109,3 +110,31 @@ def test_build_degradation_fn_variants_and_invalid_type() -> None:
 
     with pytest.raises(ValueError, match="Unsupported degradation_type"):
         build_degradation_fn("glare", 0.5)
+
+
+def test_degradation_pipeline_preserves_model_b_rng_and_supports_motion_blur() -> None:
+    arr = np.zeros((32, 32), dtype=np.uint8)
+    arr[12:20, 12:20] = 255
+    img = Image.fromarray(arr)
+
+    pipe_default = DegradationPipeline(seed=123)
+    pipe_explicit_zero = DegradationPipeline(motion_blur_prob=0.0, seed=123)
+    out_default = np.asarray(pipe_default(img))
+    out_zero = np.asarray(pipe_explicit_zero(img))
+    assert np.array_equal(out_default, out_zero)
+    assert pipe_default.rng.bit_generator.state == pipe_explicit_zero.rng.bit_generator.state
+
+    # With motion_blur_prob=1.0 and other probs=0.0, horizontal blur spreads center row into adjacent columns
+    pipe_motion = DegradationPipeline(
+        blur_prob=0.0,
+        noise_prob=0.0,
+        perspective_prob=0.0,
+        motion_blur_prob=1.0,
+        motion_blur_kernels=(5,),
+        seed=123,
+    )
+    out_motion = np.asarray(pipe_motion(img))
+    assert out_motion.shape == (32, 32)
+    assert out_motion.dtype == np.uint8
+    assert out_motion[16, 10] > 0
+    assert not np.array_equal(out_motion, arr)

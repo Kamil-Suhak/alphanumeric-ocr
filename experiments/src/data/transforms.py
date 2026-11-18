@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, Sequence
 import numpy as np
 from PIL import Image
 
@@ -134,6 +134,8 @@ class DegradationPipeline:
         max_noise_std: float = 0.15,
         perspective_prob: float = 0.5,
         max_perspective_severity: float = 0.15,
+        motion_blur_prob: float = 0.0,
+        motion_blur_kernels: Sequence[int] = (3, 5, 7),
         seed: Optional[int] = None,
     ):
         self.blur_prob = blur_prob
@@ -142,6 +144,8 @@ class DegradationPipeline:
         self.max_noise_std = max_noise_std
         self.perspective_prob = perspective_prob
         self.max_perspective_severity = max_perspective_severity
+        self.motion_blur_prob = motion_blur_prob
+        self.motion_blur_kernels = tuple(int(k) for k in motion_blur_kernels)
         self.rng = np.random.default_rng(seed)
 
     def __call__(self, img_pil: Image.Image) -> Image.Image:
@@ -154,6 +158,10 @@ class DegradationPipeline:
         if self.rng.random() < self.blur_prob:
             sig = float(self.rng.uniform(0.1, self.max_sigma))
             arr = apply_gaussian_blur(arr, sigma=sig)
+
+        if self.motion_blur_prob > 0.0 and self.rng.random() < self.motion_blur_prob:
+            ksize = int(self.rng.choice(self.motion_blur_kernels))
+            arr = apply_motion_blur(arr, kernel_size=ksize, angle_deg=0.0)
 
         if self.rng.random() < self.noise_prob:
             std = float(self.rng.uniform(0.01, self.max_noise_std))
