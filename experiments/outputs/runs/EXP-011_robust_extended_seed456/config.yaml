@@ -1,0 +1,33 @@
+experiment:
+  name: EXP-011_robust_extended_seed456
+  description: 'Model B+ (Robust Extended) uczony z 4 degradacjami: perspektywa, rozmycie
+    Gaussa, rozmycie ruchowe i szum'
+seed: 456
+dataset:
+  name: emnist_byclass
+  num_classes: 62
+  val_ratio: 0.1
+  mean: 0.1331
+  std: 0.287
+model:
+  name: AlphanumericCNN
+  in_channels: 1
+  dropout: 0.5
+training:
+  batch_size: 512
+  epochs: 25
+  learning_rate: 0.001
+  weight_decay: 0.0001
+augmentation:
+  blur: true
+  max_sigma: 2.0
+  motion_blur: true
+  motion_blur_kernels:
+  - 3
+  - 5
+  - 7
+  - 9
+  noise: true
+  max_noise_std: 0.15
+  perspective: true
+  max_perspective_severity: 0.25

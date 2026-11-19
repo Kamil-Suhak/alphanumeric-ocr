@@ -1,0 +1,163 @@
+{
+  "eval_seed": 123,
+  "num_samples": 116323,
+  "tiers": {
+    "tier_1_mild": {
+      "perspective": 0.08,
+      "blur": 0.8,
+      "noise": 0.04
+    },
+    "tier_2_moderate": {
+      "perspective": 0.15,
+      "blur": 1.5,
+      "noise": 0.08
+    },
+    "tier_3_harsh": {
+      "perspective": 0.22,
+      "blur": 2.2,
+      "noise": 0.14
+    }
+  },
+  "runs": {
+    "EXP-001_baseline_seed123": {
+      "clean": {
+        "accuracy_pct": 87.62,
+        "macro_f1_pct": 75.59,
+        "case_insensitive_acc_pct": 90.96,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 73.96,
+        "macro_f1_pct": 55.05,
+        "case_insensitive_acc_pct": 80.51,
+        "retention_pct": 84.41
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 18.63,
+        "macro_f1_pct": 8.71,
+        "case_insensitive_acc_pct": 19.3,
+        "retention_pct": 21.26
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 5.64,
+        "macro_f1_pct": 0.69,
+        "case_insensitive_acc_pct": 5.64,
+        "retention_pct": 6.44
+      }
+    },
+    "EXP-002_robust_seed123": {
+      "clean": {
+        "accuracy_pct": 87.46,
+        "macro_f1_pct": 74.58,
+        "case_insensitive_acc_pct": 90.88,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 86.62,
+        "macro_f1_pct": 73.06,
+        "case_insensitive_acc_pct": 90.18,
+        "retention_pct": 99.04
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 84.1,
+        "macro_f1_pct": 69.17,
+        "case_insensitive_acc_pct": 87.6,
+        "retention_pct": 96.16
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 62.29,
+        "macro_f1_pct": 45.27,
+        "case_insensitive_acc_pct": 64.84,
+        "retention_pct": 71.23
+      }
+    },
+    "EXP-011_robust_extended_seed123": {
+      "clean": {
+        "accuracy_pct": 87.34,
+        "macro_f1_pct": 73.66,
+        "case_insensitive_acc_pct": 90.86,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 86.43,
+        "macro_f1_pct": 72.3,
+        "case_insensitive_acc_pct": 89.99,
+        "retention_pct": 98.96
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 83.75,
+        "macro_f1_pct": 68.41,
+        "case_insensitive_acc_pct": 87.23,
+        "retention_pct": 95.89
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 63.77,
+        "macro_f1_pct": 46.64,
+        "case_insensitive_acc_pct": 66.2,
+        "retention_pct": 73.02
+      }
+    },
+    "EXP-011_robust_extended_seed456": {
+      "clean": {
+        "accuracy_pct": 87.2,
+        "macro_f1_pct": 74.28,
+        "case_insensitive_acc_pct": 90.65,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 86.48,
+        "macro_f1_pct": 72.81,
+        "case_insensitive_acc_pct": 89.97,
+        "retention_pct": 99.18
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 83.89,
+        "macro_f1_pct": 68.53,
+        "case_insensitive_acc_pct": 87.4,
+        "retention_pct": 96.21
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 64.26,
+        "macro_f1_pct": 46.77,
+        "case_insensitive_acc_pct": 66.82,
+        "retention_pct": 73.7
+      }
+    },
+    "EXP-011_robust_extended_seed789": {
+      "clean": {
+        "accuracy_pct": 87.32,
+        "macro_f1_pct": 74.23,
+        "case_insensitive_acc_pct": 90.77,
+        "retention_pct": 100.0
+      },
+      "tier_1_mild": {
+        "accuracy_pct": 86.52,
+        "macro_f1_pct": 73.0,
+        "case_insensitive_acc_pct": 90.01,
+        "retention_pct": 99.08
+      },
+      "tier_2_moderate": {
+        "accuracy_pct": 83.7,
+        "macro_f1_pct": 68.96,
+        "case_insensitive_acc_pct": 87.21,
+        "retention_pct": 95.86
+      },
+      "tier_3_harsh": {
+        "accuracy_pct": 64.56,
+        "macro_f1_pct": 48.19,
+        "case_insensitive_acc_pct": 67.2,
+        "retention_pct": 73.94
+      }
+    }
+  },
+  "comparison": {
+    "baseline_run": "EXP-001_baseline_seed123",
+    "robust_run": "EXP-002_robust_seed123",
+    "accuracy_diff_pp": {
+      "clean": -0.16,
+      "tier_1_mild": 12.66,
+      "tier_2_moderate": 65.47,
+      "tier_3_harsh": 56.65
+    }
+  }
+}
